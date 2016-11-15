@@ -159,6 +159,13 @@ class Options extends AbstractViewOptions
     protected $forceDom;
 
     /**
+     * Load table on $(document).ready().
+     *
+     * @var boolean
+     */
+    protected $loadOnDocumentReady;
+
+    /**
      * Data property name that DataTables will use to set tr element DOM IDs.
      *
      * @var string
@@ -218,6 +225,7 @@ class Options extends AbstractViewOptions
             'individual_filtering_position' => 'head',
             'use_integration_options' => false,
             'force_dom' => false,
+            'load_on_document_ready' => true,
             'row_id' => '',
             'count_all_results' => true
         ));
@@ -241,6 +249,7 @@ class Options extends AbstractViewOptions
         $resolver->setAllowedTypes('individual_filtering_position', 'string');
         $resolver->setAllowedTypes('use_integration_options', 'bool');
         $resolver->setAllowedTypes('force_dom', 'bool');
+        $resolver->setAllowedTypes('load_on_document_ready', 'bool');
         $resolver->setAllowedTypes('row_id', 'string');
         $resolver->setAllowedTypes('count_all_results', 'bool');
 
@@ -718,6 +727,22 @@ class Options extends AbstractViewOptions
     public function getForceDom()
     {
         return $this->forceDom;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLoadOnDocumentReady()
+    {
+        return $this->loadOnDocumentReady;
+    }
+
+    /**
+     * @param boolean $loadOnDocumentReady
+     */
+    public function setLoadOnDocumentReady($loadOnDocumentReady)
+    {
+        $this->loadOnDocumentReady = $loadOnDocumentReady;
     }
 
     /**

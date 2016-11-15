@@ -1,9 +1,15 @@
 <script type="text/javascript">
-    $(document).ready(function () {
+    {% if true == view_options.isLoadOnDocumentReady %}
+        $(document).ready(function()
+        {
+            initialize_{{ view_table_id }}();
+        });
+    {% endif %}
 
+    function initialize_{{ view_table_id }}() {
         if (typeof window.pipelineFunctionAlreadyLoaded == 'undefined') {
             {% if view_ajax.pipeline > 0 %}
-               {% include "SgDatatablesBundle:Datatable:pipeline.js.twig" %}
+            {% include "SgDatatablesBundle:Datatable:pipeline.js.twig" %}
             {% endif %}
         }
 
@@ -33,7 +39,7 @@
             {% include "SgDatatablesBundle:Datatable:search_columns.html.twig" %}
         };
 
-        setTimeout(function() {
+        setTimeout(function () {
             var columns = {
                 {% include "SgDatatablesBundle:Datatable:columns.html.twig" %}
             };
@@ -53,57 +59,57 @@
                 var oTable = $(selector)
                 {# Use the Button-Extension with integration options #}
                 {% if view_features.extensions.buttons is defined %}
-                    {% if true == view_options.useIntegrationOptions and false == view_options.getForceDom %}
+                {% if true == view_options.useIntegrationOptions and false == view_options.getForceDom %}
                         .on('init.dt',
-                            function() {
-                                if ('bootstrap' == oTable.context[0].renderer) {
-                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .col-sm-6:eq(0)');
-                                }
+                                function () {
+                                    if ('bootstrap' == oTable.context[0].renderer) {
+                                        oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .col-sm-6:eq(0)');
+                                    }
 
-                                if ('foundation' == oTable.context[0].renderer) {
-                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .small-6.columns:eq(0)');
-                                }
+                                    if ('foundation' == oTable.context[0].renderer) {
+                                        oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .small-6.columns:eq(0)');
+                                    }
 
-                                if ('jqueryui' == oTable.context[0].renderer) {
-                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id);
+                                    if ('jqueryui' == oTable.context[0].renderer) {
+                                        oTable.buttons().container().appendTo('#' + oTable.table().container().id);
+                                    }
                                 }
-                            }
                         )
-                    {% endif %}
-                {% endif %}
-                {% include "SgDatatablesBundle:Datatable:before_events.js.twig" %}
-                .DataTable(defaults)
-                        .on('draw.dt', function() {
+                        {% endif %}
+                        {% endif %}
+                        {% include "SgDatatablesBundle:Datatable:before_events.js.twig" %}
+                        .DataTable(defaults)
+                        .on('draw.dt', function () {
                             {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
                             {% if true == view_features.highlight %}
-                                {% include "SgDatatablesBundle:Datatable:highlight.js.twig" %}
+                            {% include "SgDatatablesBundle:Datatable:highlight.js.twig" %}
                             {% endif %}
                         })
                         {% include "SgDatatablesBundle:Datatable:after_events.js.twig" %}
                         {% if view_features.extensions.responsive is defined %}
-                            {% if true == view_features.extensions.responsive %}
-                                .on( 'responsive-display', function ( e, datatable, row, showHide, update ) {
-                                    if (showHide) {
-                                        {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
-                                    }
-                                });
-                            {% endif %}
-                        {% endif %}
+                        {% if true == view_features.extensions.responsive %}
+                        .on('responsive-display', function (e, datatable, row, showHide, update) {
+                            if (showHide) {
+                                {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
+                            }
+                        });
+                {% endif %}
+                {% endif %}
             }
 
             {% if view_options.individualFiltering %}
 
-                {% if "head" == view_options.individualFilteringPosition %}
-                    $(selector + '_wrapper tfoot tr').insertAfter($(selector + '_wrapper thead tr').first());
-                {% endif %}
+            {% if "head" == view_options.individualFilteringPosition %}
+            $(selector + '_wrapper tfoot tr').insertAfter($(selector + '_wrapper thead tr').first());
+            {% endif %}
 
-                {% if "both" == view_options.individualFilteringPosition %}
-                    $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr').first());
-                {% endif %}
+            {% if "both" == view_options.individualFilteringPosition %}
+            $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr').first());
+            {% endif %}
 
-                {# "foot" position -> datatable_html.html.twig #}
+            {# "foot" position -> datatable_html.html.twig #}
 
-                var throttledSearch = $.fn.DataTable.util.throttle(
+            var throttledSearch = $.fn.DataTable.util.throttle(
                     function (event) {
                         if (event.type == "keyup") {
                             if (
@@ -124,28 +130,28 @@
                                 .draw();
                     },
                     options.searchDelay
-                );
+            );
 
-                $(selector + "_wrapper").find("tr input.individual_filtering").on("keyup change", throttledSearch);
+            $(selector + "_wrapper").find("tr input.individual_filtering").on("keyup change", throttledSearch);
 
-                $(selector + "_wrapper" + " select.individual_filtering").on("keyup change", function(event) {
-                    var searchFieldId = $(event.currentTarget).data('filter-property-id');
-                    var searchValue = $(this).val();
-                    searchValue = searchValue ? searchValue.toString() : '';
-                    oTable
+            $(selector + "_wrapper" + " select.individual_filtering").on("keyup change", function (event) {
+                var searchFieldId = $(event.currentTarget).data('filter-property-id');
+                var searchValue = $(this).val();
+                searchValue = searchValue ? searchValue.toString() : '';
+                oTable
                         .column(searchFieldId)
                         .search(searchValue)
                         .draw();
-                });
+            });
 
             {% endif %}
 
             {% if view_multiselect %}
-                {% include "SgDatatablesBundle:Action:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
+            {% include "SgDatatablesBundle:Action:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
             {% endif %}
 
         }, features.delay);
-    });
+    }
 
 </script>
 
