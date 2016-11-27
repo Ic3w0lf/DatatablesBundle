@@ -16,6 +16,9 @@
 {% else %}
     "ajax": {
         "url": "{{ view_ajax.url|raw }}",
-        "type": "{{ view_ajax.type }}"
+        "type": "{{ view_ajax.type }}",
+        {% if (view_ajax.dataSrc) %}
+            "dataSrc": {% include view_ajax.dataSrc['template'] with view_ajax.dataSrc['vars']|default({}) %}
+        {% endif %}
     },
 {% endif %}
