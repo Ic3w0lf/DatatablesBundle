@@ -1,0 +1,5 @@
+function xhr(e, settings, json, xhr) {
+    var API = new $.fn.dataTable.Api(settings);
+
+    App.unblockUI(API.table().container());
+}

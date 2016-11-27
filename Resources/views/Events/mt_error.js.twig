@@ -1,0 +1,11 @@
+function error(e, settings) {
+    var API = new $.fn.dataTable.Api(settings);
+
+    App.alert({
+        type: 'danger',
+        icon: 'warning',
+        message: API.i18n('ajaxRequestGeneralError')
+    });
+
+    App.unblockUI(API.table().container());
+}
