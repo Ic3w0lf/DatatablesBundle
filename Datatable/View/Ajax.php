@@ -43,6 +43,13 @@ class Ajax extends AbstractViewOptions
      */
     protected $pipeline;
 
+    /**
+     * Function for AJAX dataSrc param
+     *
+     * @var array
+     */
+    protected $dataSrc;
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -53,14 +60,16 @@ class Ajax extends AbstractViewOptions
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'url' => '',
-            'type' => 'GET',
-            'pipeline' => 0
+            'url'       => '',
+            'type'      => 'GET',
+            'pipeline'  => 0,
+            'dataSrc'   => array()
         ));
 
         $resolver->setAllowedTypes('url', 'string');
         $resolver->setAllowedTypes('type', 'string');
         $resolver->setAllowedTypes('pipeline', 'int');
+        $resolver->setAllowedTypes('dataSrc', 'array');
 
         $resolver->setAllowedValues('type', array('GET', 'POST', 'get', 'post'));
 
@@ -141,5 +150,25 @@ class Ajax extends AbstractViewOptions
     public function getPipeline()
     {
         return $this->pipeline;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataSrc()
+    {
+        return $this->dataSrc;
+    }
+
+    /**
+     * @param array $dataSrc
+     *
+     * @return $this
+     */
+    public function setDataSrc($dataSrc)
+    {
+        $this->dataSrc = $dataSrc;
+
+        return $this;
     }
 }
