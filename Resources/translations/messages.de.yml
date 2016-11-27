@@ -1,9 +1,10 @@
 datatables:
     datatable:
+        ajaxRequestGeneralError: "Anfrage konnte nicht bearbeitet werden. Bitte überprüfen Sie ihre Verbindung."
         processing: "Bitte warten..."
-        lengthMenu: "_MENU_ Einträge anzeigen"
+        lengthMenu: "| Zeige _MENU_ Einträge"
         zeroRecords: "Keine Einträge vorhanden."
-        info: "_START_ bis _END_ von _TOTAL_ Einträgen"
+        info: "| _START_ bis _END_ von _TOTAL_ Einträgen"
         infoEmpty: "0 bis 0 von 0 Einträgen"
         infoFiltered: "(gefiltert von _MAX_ Einträgen)"
         infoPostFix: ""
