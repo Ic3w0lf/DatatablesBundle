@@ -179,6 +179,13 @@ class Options extends AbstractViewOptions
      */
     protected $countAllResults;
 
+    /**
+     * Show DataTable processing.
+     *
+     * @var boolean
+     */
+    protected $processing;
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -227,7 +234,8 @@ class Options extends AbstractViewOptions
             'force_dom' => false,
             'load_on_document_ready' => true,
             'row_id' => '',
-            'count_all_results' => true
+            'count_all_results' => true,
+            'processing' => false
         ));
 
         $resolver->setAllowedTypes('display_start', 'int');
@@ -252,6 +260,7 @@ class Options extends AbstractViewOptions
         $resolver->setAllowedTypes('load_on_document_ready', 'bool');
         $resolver->setAllowedTypes('row_id', 'string');
         $resolver->setAllowedTypes('count_all_results', 'bool');
+        $resolver->setAllowedTypes('processing', 'bool');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
 
@@ -791,5 +800,25 @@ class Options extends AbstractViewOptions
     public function getCountAllResults()
     {
         return $this->countAllResults;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isProcessing()
+    {
+        return $this->processing;
+    }
+
+    /**
+     * @param boolean $processing
+     *
+     * @return $this
+     */
+    public function setProcessing($processing)
+    {
+        $this->processing = $processing;
+
+        return $this;
     }
 }
