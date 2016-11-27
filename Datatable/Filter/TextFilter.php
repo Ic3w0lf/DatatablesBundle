@@ -22,6 +22,11 @@ use Doctrine\ORM\Query\Expr\Andx;
  */
 class TextFilter extends AbstractFilter
 {
+    /**
+     * @var string
+     */
+    protected $placeholder;
+
     //-------------------------------------------------
     // FilterInterface
     //-------------------------------------------------
@@ -62,22 +67,49 @@ class TextFilter extends AbstractFilter
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'search_type' => 'like',
-            'property' => '',
-            'search_column' => '',
-            'class' => '',
-            'cancel_button' => false
-        ));
+        $resolver->setDefaults(
+            array(
+                'search_type'   => 'like',
+                'property'      => '',
+                'search_column' => '',
+                'class'         => '',
+                'cancel_button' => false,
+                'placeholder'   => ''
+            )
+        );
 
         $resolver->setAllowedTypes('search_type', 'string');
         $resolver->setAllowedTypes('property', 'string');
         $resolver->setAllowedTypes('search_column', 'string');
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('cancel_button', 'bool');
+        $resolver->setAllowedTypes('placeholder', 'string');
 
-        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
+        $resolver->setAllowedValues(
+            'search_type',
+            array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull')
+        );
 
         return $this;
+    }
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
+
+    /**
+     * @return string
+     */
+    public function getPlaceholder()
+    {
+        return $this->placeholder;
+    }
+
+    /**
+     * @param string $placeholder
+     */
+    public function setPlaceholder($placeholder)
+    {
+        $this->placeholder = $placeholder;
     }
 }
