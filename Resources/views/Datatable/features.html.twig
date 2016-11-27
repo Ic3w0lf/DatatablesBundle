@@ -28,10 +28,10 @@
         "buttons": [
             {% for option in options %}
                 {% if option.action is defined %}
-                {
+                $.extend({
                     "text": "{{ option.text }}",
                     "action": {{ include(option.action|raw) }}
-                },
+                }, {{ option|json_encode|raw }}),
                 {% else %}
                     {{ option|json_encode|raw }},
                 {% endif %}
