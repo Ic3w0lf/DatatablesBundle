@@ -50,7 +50,7 @@
             {% include "SgDatatablesBundle:Datatable:search_columns.html.twig" %}
         };
 
-        setTimeout(function () {
+        {% if view_features.delay > 0 %}setTimeout(function (){{ '{' }}{% endif %}
             var columns = {
                 {% include "SgDatatablesBundle:Datatable:columns.html.twig" %}
             };
@@ -64,70 +64,73 @@
             $.extend(true, defaults, finalOptions);
 
             if ($.fn.DataTable.isDataTable(selector)) {
-                {# to check if datatable already exists #}
-            } else {
-                var oTable = $(selector)
-                {# Use the Button-Extension with integration options #}
-                {% if view_features.extensions.buttons is defined %}
-                {% if true == view_options.useIntegrationOptions and false == view_options.getForceDom %}
-                        .on('init.dt',
-                            function () {
-                                if ('bootstrap' == oTable.context[0].renderer) {
-                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .col-sm-6:eq(0)');
-                                }
-
-                                if ('foundation' == oTable.context[0].renderer) {
-                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .small-6.columns:eq(0)');
-                                }
-
-                                if ('jqueryui' == oTable.context[0].renderer) {
-                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id);
-                                }
-                            }
-                        )
-                        {% endif %}
-                        {% endif %}
-                        {% include "SgDatatablesBundle:Datatable:before_events.js.twig" %}
-                        .DataTable(defaults)
-                        .on('draw.dt', function () {
-                            {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
-                            {% if true == view_features.highlight %}
-                            {% include "SgDatatablesBundle:Datatable:highlight.js.twig" %}
-                            {% endif %}
-                        })
-                        {% include "SgDatatablesBundle:Datatable:after_events.js.twig" %}
-                        {% if view_features.extensions.responsive is defined %}
-                        {% if true == view_features.extensions.responsive %}
-                        .on('responsive-display', function (e, datatable, row, showHide, update) {
-                            if (showHide) {
-                                {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
-                            }
-                        });
-                {% endif %}
-                {% endif %}
+                return;
             }
 
-            //rebind global search input because I think it fires way to many times
-            $(selector).parents('.dataTables_wrapper').find('.dataTables_filter input[type="search"]').each(function () {
-                var searchInput = $(this);
-                searchInput
-                    .unbind()
-                    .on('input', function () {
-                        delayCancel(function () {
-                            oTable.search(searchInput.val()).draw();
-                        }, {{ view_options.searchDelay }});
+            var oTable = $(selector)
+            {# Use the Button-Extension with integration options #}
+            {% if view_features.extensions.buttons is defined %}
+                {% if true == view_options.useIntegrationOptions and false == view_options.getForceDom %}
+                    .on('init.dt',
+                        function () {
+                            if ('bootstrap' == oTable.context[0].renderer) {
+                                oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .col-sm-6:eq(0)');
+                            }
+
+                            if ('foundation' == oTable.context[0].renderer) {
+                                oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .small-6.columns:eq(0)');
+                            }
+
+                            if ('jqueryui' == oTable.context[0].renderer) {
+                                oTable.buttons().container().appendTo('#' + oTable.table().container().id);
+                            }
+                        }
+                    )
+                {% endif %}
+            {% endif %}
+            {% include "SgDatatablesBundle:Datatable:before_events.js.twig" %}
+            .DataTable(defaults)
+            .on('draw.dt', function () {
+                {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
+                {% if true == view_features.highlight %}
+                {% include "SgDatatablesBundle:Datatable:highlight.js.twig" %}
+                {% endif %}
+            })
+            {% include "SgDatatablesBundle:Datatable:after_events.js.twig" %}
+            {% if view_features.extensions.responsive is defined %}
+                {% if true == view_features.extensions.responsive %}
+                    .on('responsive-display', function (e, datatable, row, showHide, update) {
+                        if (showHide) {
+                            {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
+                        }
                     });
-            });
-
-            {% if view_options.individualFiltering %}
-                {% include "@SgDatatables/Datatable/individual_filter.js.twig" %}
+                {% endif %}
             {% endif %}
 
-            {% if view_multiselect %}
-                {% include "SgDatatablesBundle:Action:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
-            {% endif %}
+        //rebind global search input because I think it fires way to many times
+        $(selector).parents('.dataTables_wrapper').find('.dataTables_filter input[type="search"]').each(function () {
+            var searchInput = $(this);
+            searchInput
+                .unbind()
+                .on('input', function () {
+                    delayCancel(function () {
+                        oTable.search(searchInput.val()).draw();
+                    }, {{ view_options.searchDelay }});
+                });
+        });
 
-        }, features.delay);
+        {% if view_options.individualFiltering %}
+            {% include "@SgDatatables/Datatable/individual_filter.js.twig" %}
+        {% endif %}
+
+        {% if view_multiselect %}
+            {% include "SgDatatablesBundle:Action:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
+        {% endif %}
+
+        {% if view_features.delay > 0 %}{{ '}, '~view_features.delay~');' }}{% endif %}
+
+        //return datatable handle or selector if not available
+        return oTable === undefined ? selector : oTable;
     }
 
 </script>
