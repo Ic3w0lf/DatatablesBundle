@@ -132,15 +132,12 @@
         //return datatable handle or selector if not available
         return oTable === undefined ? selector : oTable;
     }
-
 </script>
 
 {% block sg_datatable_render_functions %}
-
     <script type="text/javascript">
         if (typeof window.renderFunctionsAlreadyLoaded == 'undefined') {
             {% include "SgDatatablesBundle:Datatable:render_functions.js.twig" %}
         }
     </script>
-
 {% endblock %}
