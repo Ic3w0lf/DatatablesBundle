@@ -9,6 +9,14 @@
 {% extends 'SgDatatablesBundle:Filters:filter.html.twig' %}
 
 {% block html %}
+    {% if column.filter.searchTypes|length > 1 %}
+        <select id="{{ tableId }}-sg-search-type-{{ selectorId }}" class="">
+            {% for searchType in column.filter.searchTypes %}
+                <option value="{{ searchType }}">{{ searchType }}</option>
+            {% endfor %}
+        </select>
+    {% endif %}
+
     <input type="text"
            id="{{ tableId }}-sg-filter-{{ selectorId }}"
            class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"

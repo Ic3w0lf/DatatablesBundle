@@ -97,7 +97,7 @@ class BooleanColumn extends AbstractColumn
         $resolver->setDefaults(array(
             'render' => 'render_boolean',
             'filter' => array('select', array(
-                'search_type' => 'eq',
+                'search_types'   => array('eq'),
                 'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No')
             )),
             'true_icon' => '',

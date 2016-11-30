@@ -54,4 +54,9 @@ interface FilterInterface
      * @return string
      */
     public function getAlias();
+
+    /**
+     * @param string $searchType
+     */
+    public function setSearchType($searchType);
 }

@@ -33,7 +33,14 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
     protected $options;
 
     /**
-     * The search type (e.g. 'like').
+     * The available search types (e.g. 'like', 'notLike').
+     *
+     * @var array
+     */
+    protected $searchTypes;
+
+    /**
+     * The current selected search type (e.g. 'like').
      *
      * @var string
      */
@@ -129,7 +136,12 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
      */
     protected function getAndExpression(Andx $andExpr, QueryBuilder $pivot, $searchField, $searchValue, $i)
     {
-        switch ($this->getSearchType()) {
+        $searchType = $this->getSearchType();
+        if (sizeof($this->getSearchTypes()) === 1) {
+            $searchType = $this->getSearchTypes()[0];
+        }
+
+        switch ($searchType) {
             case 'like':
                 $andExpr->add($pivot->expr()->like($searchField, '?' . $i));
                 $pivot->setParameter($i, '%' . $searchValue . '%');
@@ -206,8 +218,26 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
     //-------------------------------------------------
 
     /**
-     * Get search type.
+     * @return array
+     */
+    public function getSearchTypes()
+    {
+        return $this->searchTypes;
+    }
+
+    /**
+     * @param array $searchTypes
      *
+     * @return $this
+     */
+    public function setSearchTypes($searchTypes)
+    {
+        $this->searchTypes = $searchTypes;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getSearchType()
@@ -216,15 +246,15 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
     }
 
     /**
-     * Set search type.
-     *
      * @param string $searchType
      *
      * @return $this
      */
     public function setSearchType($searchType)
     {
-        $this->searchType = $searchType;
+        if (in_array(strtolower($searchType), $this->searchTypes)) {
+            $this->searchType = $searchType;
+        }
 
         return $this;
     }

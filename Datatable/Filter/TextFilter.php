@@ -69,7 +69,7 @@ class TextFilter extends AbstractFilter
     {
         $resolver->setDefaults(
             array(
-                'search_type'   => 'like',
+                'search_types'  => array('like'),
                 'property'      => '',
                 'search_column' => '',
                 'class'         => '',
@@ -78,17 +78,12 @@ class TextFilter extends AbstractFilter
             )
         );
 
-        $resolver->setAllowedTypes('search_type', 'string');
+        $resolver->setAllowedTypes('search_types', 'array');
         $resolver->setAllowedTypes('property', 'string');
         $resolver->setAllowedTypes('search_column', 'string');
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('cancel_button', 'bool');
         $resolver->setAllowedTypes('placeholder', 'string');
-
-        $resolver->setAllowedValues(
-            'search_type',
-            array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull')
-        );
 
         return $this;
     }

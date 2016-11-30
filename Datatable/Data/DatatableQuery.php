@@ -549,16 +549,21 @@ class DatatableQuery
             foreach ($this->columns as $key => $column) {
 
                 if (true === $this->isSearchColumn($column)) {
-                    $filter = $column->getFilter();
+                    $filter      = $column->getFilter();
                     $searchField = $this->searchColumns[$key];
                     
                     if (array_key_exists($key, $this->requestParams['columns']) === false) {
                         continue;
                     }
-                    
-                    $searchValue = $this->requestParams['columns'][$key]['search']['value'];
-                    
+
+                    $columnSearchParams = $this->requestParams['columns'][$key]['search'];
+                    $searchValue        = $columnSearchParams['value'];
+
                     if ('' != $searchValue && 'null' != $searchValue) {
+                        if (isset($columnSearchParams['search_type'])) {
+                            $filter->setSearchType($columnSearchParams['search_type']);
+                        }
+
                         if (true === $this->isPostgreSQLConnection) {
                             $searchField = $this->cast($searchField, $column);
                         }

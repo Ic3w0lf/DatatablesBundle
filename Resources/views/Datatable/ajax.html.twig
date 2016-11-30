@@ -7,18 +7,48 @@
  # file that was distributed with this source code.
  #}
 "serverSide": true,
-{% if view_ajax.pipeline > 0 %}
-    "ajax": $.fn.dataTable.pipeline({
-        "url": "{{ view_ajax.url|raw }}",
-        "method": "{{ view_ajax.type }}",
-        "pages": {{ view_ajax.pipeline }}
-    }),
-{% else %}
-    "ajax": {
-        "url": "{{ view_ajax.url|raw }}",
-        "type": "{{ view_ajax.type }}",
-        {% if (view_ajax.dataSrc) %}
-            "dataSrc": {% include view_ajax.dataSrc['template'] with view_ajax.dataSrc['vars']|default({}) %}
-        {% endif %}
-    },
-{% endif %}
+"ajax": {
+    "url": "{{ view_ajax.url|raw }}",
+    "type": "{{ view_ajax.type }}",
+    {% if view_ajax.pipeline > 0 %}
+        "pages": {{ view_ajax.pipeline }},
+    {% endif %}
+    {% if (view_ajax.dataSrc) %}
+        "dataSrc": {% include view_ajax.dataSrc['template'] with view_ajax.dataSrc['vars']|default({}) %},
+    {% endif %}
+    {% if view_options.individualFiltering %}
+        // add request parameters before submit
+        "data": function (data) {
+            var tableId      = selector,
+                tableWrapper = $(tableId + '_wrapper');
+
+           //todo, cache search_type selectors with columnIdx for better performance?
+            for (var columnIdx in data.columns) {
+                // skip loop if the property is from prototype
+                if (!data.columns.hasOwnProperty(columnIdx)) continue;
+
+                // skip loop if column is not searchable anyway
+                if (!data.columns[columnIdx].searchable) continue;
+
+                var sourceInput = tableWrapper
+                    .find('tr input' + tableId +'-sg-filter-' + columnIdx)
+                    .first();
+
+                // no column filter found
+                if (!sourceInput.length) continue;
+
+                var searchTypeSelect = sourceInput
+                    .siblings('select' + tableId + '-sg-search-type-' + columnIdx)
+                    .first();
+
+                // no filter search type found
+                if (!searchTypeSelect.length) continue;
+
+                // add search_type reference to
+
+                // add search_type parameter to ajax data obj
+                data.columns[columnIdx].search.search_type = searchTypeSelect.val();
+            }
+        }
+    {% endif %}
+},

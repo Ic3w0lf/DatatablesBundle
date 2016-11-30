@@ -96,7 +96,7 @@ class ProgressBarColumn extends AbstractColumn
         $resolver->setDefaults(array(
             'render' => 'render_progress_bar',
             'filter' => array('text', array(
-                'search_type' => 'eq'
+                'search_types' => array('eq')
             )),
             'bar_classes' => '',
             'value_min' => '0',
