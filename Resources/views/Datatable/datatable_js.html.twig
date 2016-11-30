@@ -98,6 +98,18 @@
                 {% endif %}
             }
 
+            //rebind global search input because I think it fires way to many times
+            $(selector).parents('.dataTables_wrapper').find('.dataTables_filter input[type="search"]').each(function () {
+                var searchInput = $(this);
+                searchInput
+                    .unbind()
+                    .on('input', function () {
+                        delayCancel(function () {
+                            oTable.search(searchInput.val()).draw();
+                        }, {{ view_options.searchDelay }});
+                    });
+            });
+
             {% if view_options.individualFiltering %}
 
             {% if "head" == view_options.individualFilteringPosition %}
