@@ -9,6 +9,15 @@
     function initialize_{{ view_table_id }}(finalOptions) {
         finalOptions = finalOptions === undefined ? {} : finalOptions;
 
+        //small delay helper method
+        var delayCancel = (function(){
+            var timer = 0;
+            return function (callback, ms) {
+                clearTimeout(timer);
+                timer = setTimeout(callback, ms);
+            };
+        })();
+
         if (typeof window.pipelineFunctionAlreadyLoaded == 'undefined') {
             {% if view_ajax.pipeline > 0 %}
                 {% include "SgDatatablesBundle:Datatable:pipeline.js.twig" %}

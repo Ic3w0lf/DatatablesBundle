@@ -1,0 +1,28 @@
+{% if "head" == view_options.individualFilteringPosition %}
+    $(selector + '_wrapper tfoot tr').insertAfter($(selector + '_wrapper thead tr').first());
+{% endif %}
+
+{% if "both" == view_options.individualFilteringPosition %}
+    $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr').first());
+{% endif %}
+
+{# "foot" position -> datatable_html.html.twig #}
+$(selector + "_wrapper").find("tr input.individual_filtering").on("input", function (event) {
+    delayCancel(function () {
+        var curInput = $(event.currentTarget);
+        oTable
+            .column(curInput.data('filter-property-id'))
+            .search(curInput.val())
+            .draw();
+    }, options.searchDelay);
+});
+
+$(selector + "_wrapper" + " select.individual_filtering").on("input", function (event) {
+    var searchFieldId = $(event.currentTarget).data('filter-property-id');
+    var searchValue = $(this).val();
+    searchValue = searchValue ? searchValue.toString() : '';
+    oTable
+        .column(searchFieldId)
+        .search(searchValue)
+        .draw();
+});
