@@ -6,10 +6,12 @@
         });
     {% endif %}
 
-    function initialize_{{ view_table_id }}() {
+    function initialize_{{ view_table_id }}(finalOptions) {
+        finalOptions = finalOptions === undefined ? {} : finalOptions;
+
         if (typeof window.pipelineFunctionAlreadyLoaded == 'undefined') {
             {% if view_ajax.pipeline > 0 %}
-            {% include "SgDatatablesBundle:Datatable:pipeline.js.twig" %}
+                {% include "SgDatatablesBundle:Datatable:pipeline.js.twig" %}
             {% endif %}
         }
 
@@ -50,6 +52,7 @@
             $.extend(defaults, ajax);
             $.extend(defaults, columns);
             $.extend(defaults, searchCols);
+            $.extend(true, defaults, finalOptions);
 
             if ($.fn.DataTable.isDataTable(selector)) {
                 {# to check if datatable already exists #}
@@ -59,19 +62,19 @@
                 {% if view_features.extensions.buttons is defined %}
                 {% if true == view_options.useIntegrationOptions and false == view_options.getForceDom %}
                         .on('init.dt',
-                                function () {
-                                    if ('bootstrap' == oTable.context[0].renderer) {
-                                        oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .col-sm-6:eq(0)');
-                                    }
-
-                                    if ('foundation' == oTable.context[0].renderer) {
-                                        oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .small-6.columns:eq(0)');
-                                    }
-
-                                    if ('jqueryui' == oTable.context[0].renderer) {
-                                        oTable.buttons().container().appendTo('#' + oTable.table().container().id);
-                                    }
+                            function () {
+                                if ('bootstrap' == oTable.context[0].renderer) {
+                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .col-sm-6:eq(0)');
                                 }
+
+                                if ('foundation' == oTable.context[0].renderer) {
+                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .small-6.columns:eq(0)');
+                                }
+
+                                if ('jqueryui' == oTable.context[0].renderer) {
+                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id);
+                                }
+                            }
                         )
                         {% endif %}
                         {% endif %}
