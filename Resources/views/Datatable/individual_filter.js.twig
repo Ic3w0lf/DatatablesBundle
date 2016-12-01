@@ -14,7 +14,7 @@ $(selector + "_wrapper").find("tr input.individual_filtering").on("input", funct
             .column(curInput.data('filter-property-id'))
             .search(curInput.val())
             .draw();
-    }, options.searchDelay);
+    }, {{ view_options.searchDelay }});
 });
 
 $(selector + "_wrapper" + " select.individual_filtering").on("input", function (event) {
