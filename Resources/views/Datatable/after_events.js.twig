@@ -1,3 +1,20 @@
+{# save individual filters value into stateSave #}
+{% if view_options.individualFiltering and view_features.stateSave %}
+.on('stateSaveParams.dt', function (e, oSettings, sValue) {
+    var container = $.fn.dataTable.Api(oSettings)
+        .table()
+        .header();
+
+    $(container).find("tr .individual_filtering").each(function() {
+        var element = $(this);
+        sValue[element.attr('id')] = {
+            value: element.val()
+        };
+    });
+
+    return sValue;
+})
+{% endif %}
 {% if (view_events.columnSizing) %}
     {% if (view_events.columnSizing['vars'] is defined) %}
         {% set vars = view_events.columnSizing['vars'] %}
@@ -61,14 +78,6 @@
         {% set vars = {} %}
     {% endif %}
     .on('stateLoaded.dt', {% include view_events.stateLoaded['template'] with vars %})
-{% endif %}
-{% if (view_events.stateLoadParams) %}
-    {% if (view_events.stateLoadParams['vars'] is defined) %}
-        {% set vars = view_events.stateLoadParams['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    .on('stateLoadParams.dt', {% include view_events.stateLoadParams['template'] with vars %})
 {% endif %}
 {% if (view_events.stateSaveParams) %}
     {% if (view_events.stateSaveParams['vars'] is defined) %}

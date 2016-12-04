@@ -6,7 +6,7 @@
     $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr').first());
 {% endif %}
 
-{# "foot" position -> datatable_html.html.twig #}
+{# event for inputs #}
 $(selector + "_wrapper").find("tr input.individual_filtering").on("input", function (event) {
     delayCancel(function () {
         var curInput = $(event.currentTarget);
@@ -17,6 +17,7 @@ $(selector + "_wrapper").find("tr input.individual_filtering").on("input", funct
     }, {{ view_options.searchDelay }});
 });
 
+{# input event for select drop downs #}
 $(selector + "_wrapper" + " select.individual_filtering").on("input", function (event) {
     var searchFieldId = $(event.currentTarget).data('filter-property-id');
     var searchValue = $(this).val();

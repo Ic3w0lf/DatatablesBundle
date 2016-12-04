@@ -1,3 +1,31 @@
+{# set the values from the stateSave back to its individual columns #}
+{% if view_options.individualFiltering and view_features.stateSave %}
+.on('stateLoadParams.dt', function (e, oSettings, oData) {
+    $(selector).find("tr .individual_filtering").each(function() {
+        var element = $(this);
+        if (oData[element.attr('id')]) {
+            element.val(oData[element.attr('id')].value);
+        }
+    });
+
+    return true;
+})
+{% endif %}
+{% if view_features.extensions.buttons is defined and view_options.useIntegrationOptions and not view_options.getForceDom %}
+    .on('init.dt', function init(e, settings) {
+        if ('bootstrap' == oTable.context[0].renderer) {
+            oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .col-sm-6:eq(0)');
+        }
+
+        if ('foundation' == oTable.context[0].renderer) {
+            oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .small-6.columns:eq(0)');
+        }
+
+        if ('jqueryui' == oTable.context[0].renderer) {
+            oTable.buttons().container().appendTo('#' + oTable.table().container().id);
+        }
+    })
+{% endif %}
 {% if (view_events.processing) %}
     {% if (view_events.processing['vars'] is defined) %}
         {% set vars = view_events.processing['vars'] %}
@@ -37,4 +65,12 @@
         {% set vars = {} %}
     {% endif %}
     .on('xhr.dt', {% include view_events.xhr['template'] with vars %})
+{% endif %}
+{% if (view_events.stateLoadParams) %}
+    {% if (view_events.stateLoadParams['vars'] is defined) %}
+        {% set vars = view_events.stateLoadParams['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('stateLoadParams.dt', {% include view_events.stateLoadParams['template'] with vars %})
 {% endif %}

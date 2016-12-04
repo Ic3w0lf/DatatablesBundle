@@ -5,7 +5,7 @@ datatables:
         lengthMenu: "| Zeige _MENU_ Einträge"
         zeroRecords: "Keine Einträge vorhanden."
         info: "| _START_ bis _END_ von _TOTAL_ Einträgen"
-        infoEmpty: "0 bis 0 von 0 Einträgen"
+        infoEmpty: "| 0 bis 0 von 0 Einträgen"
         infoFiltered: "(gefiltert von _MAX_ Einträgen)"
         infoPostFix: ""
         search: "Suchen"

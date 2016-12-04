@@ -68,32 +68,12 @@
             }
 
             var oTable = $(selector)
-            {# Use the Button-Extension with integration options #}
-            {% if view_features.extensions.buttons is defined %}
-                {% if true == view_options.useIntegrationOptions and false == view_options.getForceDom %}
-                    .on('init.dt',
-                        function () {
-                            if ('bootstrap' == oTable.context[0].renderer) {
-                                oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .col-sm-6:eq(0)');
-                            }
-
-                            if ('foundation' == oTable.context[0].renderer) {
-                                oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .small-6.columns:eq(0)');
-                            }
-
-                            if ('jqueryui' == oTable.context[0].renderer) {
-                                oTable.buttons().container().appendTo('#' + oTable.table().container().id);
-                            }
-                        }
-                    )
-                {% endif %}
-            {% endif %}
             {% include "SgDatatablesBundle:Datatable:before_events.js.twig" %}
             .DataTable(defaults)
             .on('draw.dt', function () {
                 {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
                 {% if true == view_features.highlight %}
-                {% include "SgDatatablesBundle:Datatable:highlight.js.twig" %}
+                    {% include "SgDatatablesBundle:Datatable:highlight.js.twig" %}
                 {% endif %}
             })
             {% include "SgDatatablesBundle:Datatable:after_events.js.twig" %}
