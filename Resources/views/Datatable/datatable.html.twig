@@ -7,17 +7,29 @@
  # file that was distributed with this source code.
  #}
 {% block sg_datatable %}
+    <script>
+        {# helper method to execute jquery code as soon as its loaded #}
+        if ( ! window.DTdeferAfterjQueryLoaded ) {
+            window.DTdeferAfterjQueryLoaded = [];
+            Object.defineProperty(window, "$", {
+                set: function(value) {
+                    window.setTimeout(function() {
+                        $.each(window.DTdeferAfterjQueryLoaded, function(index, fn) {
+                            fn();
+                        });
+                    }, 0);
+                    Object.defineProperty(window, "$", { value: value });
+                },
+                configurable: true
+            });
+        }
+    </script>
 
     {% block sg_datatable_html %}
-
         {% include "SgDatatablesBundle:Datatable:datatable_html.html.twig" %}
-
     {% endblock %}
 
     {% block sg_datatable_js %}
-
         {% include "SgDatatablesBundle:Datatable:datatable_js.html.twig" %}
-
     {% endblock %}
-
 {% endblock  %}
