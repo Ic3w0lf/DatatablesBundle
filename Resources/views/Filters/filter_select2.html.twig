@@ -12,12 +12,11 @@
     <select
         {% if column.filter.multiple %}multiple="multiple"{% endif %}
         id="{{ tableId }}-sg-filter-{{ selectorId }}"
-        class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+        class="individual_filtering {{ column.filter.class|default(defaultFilterClass) }}"
         style="width:100%;"
         {% if column.name %}name="{{ column.name }}"{% endif %}
         data-filter-property-id="{{ filterColumnId }}"
-        data-search-column="{{ column.filter.searchColumn }}"
-    >
+        data-search-column="{{ column.filter.searchColumn }}">
         {% if column.filter.searchColumn %}
             <option value="{{ column.filter.searchColumn }}">
                 {{ column.filter.searchColumn }} ({{ 'filter.default'|trans({}, 'messages') }})

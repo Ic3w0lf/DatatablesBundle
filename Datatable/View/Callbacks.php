@@ -128,20 +128,20 @@ class Callbacks extends AbstractViewOptions
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'created_row' => array(),
-            'draw_callback' => array(),
-            'footer_callback' => array(),
-            'format_number' => array(),
-            'header_callback' => array(),
-            'info_callback' => array(),
-            'init_complete' => array(),
-            'pre_draw_callback' => array(),
-            'row_callback' => array(),
+            'created_row'         => array(),
+            'draw_callback'       => array(),
+            'footer_callback'     => array(),
+            'format_number'       => array(),
+            'header_callback'     => array(),
+            'info_callback'       => array(),
+            'init_complete'       => array(),
+            'pre_draw_callback'   => array(),
+            'row_callback'        => array(),
             'state_load_callback' => array(),
-            'state_loaded' => array(),
-            'state_load_params' => array(),
+            'state_loaded'        => array(),
+            'state_load_params'   => array(),
             'state_save_callback' => array(),
-            'state_save_params' => array(),
+            'state_save_params'   => array(),
         ));
 
         $resolver->setAllowedTypes('created_row', 'array');
@@ -175,7 +175,7 @@ class Callbacks extends AbstractViewOptions
     {
         $this->nestedOptionsResolver->setDefaults(array(
             'template' => '',
-            'vars' => null,
+            'vars'     => null,
         ));
 
         $this->nestedOptionsResolver->setAllowedTypes('template', 'string');

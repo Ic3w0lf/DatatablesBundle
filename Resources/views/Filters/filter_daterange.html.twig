@@ -9,7 +9,7 @@
 {% block html %}
     <input type="text"
         id="{{ tableId }}-sg-filter-{{ selectorId }}"
-        class="individual_filtering sg-daterange{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+        class="individual_filtering sg-daterange {{ column.filter.class|default(defaultFilterClass) }}"
         style="{% if column.width %} width:{{ column.width }};{% endif %}"
         placeholder="{{ column.title|striptags|trim }}"
         data-filter-property-id="{{ filterColumnId }}"

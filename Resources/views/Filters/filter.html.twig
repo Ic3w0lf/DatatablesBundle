@@ -28,7 +28,7 @@
 {% block html %}
     <input type="text"
            id="{{ tableId }}-sg-filter-{{ selectorId }}"
-           class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+           class="individual_filtering {{ column.filter.class|default(defaultFilterClass) }}"
            style="{% if column.width %} width:{{ column.width }};{% endif %}"
            placeholder="{{ column.title|striptags|trim }}"
            data-filter-property-id="{{ filterColumnId }}"

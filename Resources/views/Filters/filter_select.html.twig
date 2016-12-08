@@ -11,7 +11,7 @@
 {% block html %}
     <select
         id="{{ tableId }}-sg-filter-{{ selectorId }}"
-        class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+        class="individual_filtering {{ column.filter.class|default(defaultFilterClass) }}"
         style="{% if column.width %} width:{{ column.width }};{% endif %}"
         {% if column.name %}name="{{ column.name }}"{% endif %}
         data-filter-property-id="{{ filterColumnId }}"

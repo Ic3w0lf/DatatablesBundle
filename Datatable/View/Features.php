@@ -142,24 +142,26 @@ class Features extends AbstractViewOptions
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'auto_width' => true,
-            'defer_render' => false,
-            'info' => true,
-            'jquery_ui' => false,
-            'length_change' => true,
-            'ordering' => true,
-            'paging' => true,
-            'processing' => true,
-            'scroll_x' => false,
-            'scroll_y' => '',
-            'searching' => true,
-            'state_save' => false,
-            'delay' => 0,
-            'extensions' => array(),
-            'highlight' => false,
-            'highlight_color' => 'red'
-        ));
+        $resolver->setDefaults(
+            array(
+                'auto_width'      => true,
+                'defer_render'    => false,
+                'info'            => true,
+                'jquery_ui'       => false,
+                'length_change'   => true,
+                'ordering'        => true,
+                'paging'          => true,
+                'processing'      => true,
+                'scroll_x'        => false,
+                'scroll_y'        => '',
+                'searching'       => true,
+                'state_save'      => false,
+                'delay'           => 0,
+                'extensions'      => array(),
+                'highlight'       => false,
+                'highlight_color' => 'red'
+            )
+        );
 
         $resolver->setAllowedTypes('auto_width', 'bool');
         $resolver->setAllowedTypes('defer_render', 'bool');

@@ -18,8 +18,7 @@
         style="{% if column.width %} width:{{ column.width }};{% endif %}"
         {% if column.name %}name="{{ column.name }}"{% endif %}
         data-filter-property-id="{{ filterColumnId }}"
-        data-search-column="{{ column.filter.searchColumn }}"
-    >
+        data-search-column="{{ column.filter.searchColumn }}">
         {% if column.filter.searchColumn %}
             <option value="{{ column.filter.searchColumn }}">
                 {{ column.filter.searchColumn }} ({{ 'filter.default'|trans({}, 'messages') }})
