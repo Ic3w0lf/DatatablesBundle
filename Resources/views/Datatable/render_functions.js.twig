@@ -141,4 +141,38 @@ function render_editable_boolean(data, type, row, meta, colData, trueLabel, fals
 
     return result;
 }
+
+function render_ellipsis(data, type, row, meta, cutoff, wordbreak, escapeHtml) {
+    if (!data) {
+        return '';
+    }
+
+    var esc = function ( t ) {
+        return t
+            .replace( /&/g, '&amp;' )
+            .replace( /</g, '&lt;' )
+            .replace( />/g, '&gt;' )
+            .replace( /"/g, '&quot;' );
+    };
+
+    data = data.toString(); // cast numbers
+
+    if ( data.length <= cutoff ) {
+        return data;
+    }
+
+    var shortened = data.substr(0, cutoff-1);
+
+    // Find the last white space character in the string
+    if ( wordbreak ) {
+        shortened = shortened.replace(/\s([^\s]*)$/, '');
+    }
+
+    // Protect against uncontrolled HTML input
+    if ( escapeHtml ) {
+        shortened = esc( shortened );
+    }
+
+    return '<span class="ellipsis" title="'+esc(data)+'">'+shortened+'&#8230;</span>';
+}
 {% endblock renderFunctions %}

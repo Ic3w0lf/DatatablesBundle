@@ -92,6 +92,13 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     protected $render;
 
     /**
+     * Additional render method arguments
+     *
+     * @var array
+     */
+    protected $renderArgs;
+
+    /**
      * Enable or disable filtering on the data in this column.
      *
      * @var boolean
@@ -281,19 +288,20 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     {
         // most common column options
         $resolver->setDefaults(array(
-            'class' => '',
+            'class'           => '',
             'default_content' => null,
-            'padding' => '',
-            'name' => '',
-            'orderable' => true,
-            'render' => null,
-            'searchable' => true,
-            'title' => '',
-            'type' => '',
-            'visible' => true,
-            'width' => '',
-            'order_sequence' => null,
-            'add_if' => null,
+            'padding'         => '',
+            'name'            => '',
+            'orderable'       => true,
+            'render'          => null,
+            'render_args'     => array(),
+            'searchable'      => true,
+            'title'           => '',
+            'type'            => '',
+            'visible'         => true,
+            'width'           => '',
+            'order_sequence'  => null,
+            'add_if'          => null,
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -302,6 +310,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
         $resolver->setAllowedTypes('name', 'string');
         $resolver->setAllowedTypes('orderable', 'bool');
         $resolver->setAllowedTypes('render', array('string', 'null'));
+        $resolver->setAllowedTypes('render_args', 'array');
         $resolver->setAllowedTypes('searchable', 'bool');
         $resolver->setAllowedTypes('title', 'string');
         $resolver->setAllowedTypes('type', 'string');
@@ -493,6 +502,22 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function getRender()
     {
         return $this->render;
+    }
+
+    /**
+     * @param array $renderArgs
+     */
+    public function setRenderArgs($renderArgs)
+    {
+        $this->renderArgs = $renderArgs;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRenderArgs()
+    {
+        return $this->renderArgs;
     }
 
     /**
