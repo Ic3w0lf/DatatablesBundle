@@ -3,8 +3,24 @@
 .on('stateLoadParams.dt', function (e, oSettings, oData) {
     $(selector).find("tr .individual_filtering").each(function() {
         var element = $(this);
-        if (oData[element.attr('id')]) {
-            element.val(oData[element.attr('id')].value);
+
+        //no data
+        if (!oData[element.attr('id')]) {
+            return;
+        }
+
+        switch (true) {
+            //more to follow?
+            case element.is('select'):
+                element
+                    .val(oData[element.attr('id')].value)
+                    .prop('selected', true)
+                    .trigger('change');
+
+                break;
+            default:
+                element
+                    .val(oData[element.attr('id')].value);
         }
     });
 

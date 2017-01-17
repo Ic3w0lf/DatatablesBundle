@@ -37,5 +37,18 @@ editable:
     tableRedraw: "The changes relates multiple records. The table is redraw with the new data."
 filter:
     default: "default"
+    search_type:
+        like: 'Contains'
+        notLike: 'Contains NOT'
+        eq: 'Equals'
+        neq: 'Equals NOT'
+        lt: 'Less than'
+        lte: 'Less than or equal'
+        gt: 'More than'
+        gte: 'More than or equal'
+        in: 'In'
+        notIn: 'NOT In'
+        isNull: 'Is null'
+        isNotNull: 'Is not null'
 query:
     filtered: "(filtered)"

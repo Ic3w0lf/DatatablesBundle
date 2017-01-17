@@ -2,10 +2,10 @@ datatables:
     datatable:
         ajaxRequestGeneralError: "Anfrage konnte nicht bearbeitet werden. Bitte überprüfen Sie ihre Verbindung."
         processing: "Bitte warten..."
-        lengthMenu: "| Zeige _MENU_ Einträge"
+        lengthMenu: " | Zeige _MENU_ Einträge"
         zeroRecords: "Keine Einträge vorhanden."
-        info: "| _START_ bis _END_ von _TOTAL_ Einträgen"
-        infoEmpty: "| 0 bis 0 von 0 Einträgen"
+        info: " | _START_ bis _END_ von _TOTAL_ Einträgen"
+        infoEmpty: " | 0 bis 0 von 0 Einträgen"
         infoFiltered: "(gefiltert von _MAX_ Einträgen)"
         infoPostFix: ""
         search: "Suchen"
@@ -37,5 +37,19 @@ editable:
     tableRedraw: "Die Änderung betrifft mehrere Einträge. Die Tabelle wird mit den neuen Daten aktualisiert."
 filter:
     default: "Standard"
+    search_type:
+        like: 'enthält'
+        notLike: 'enthält nicht'
+        eq: 'gleich'
+        neq: 'nicht gleich'
+        lt: 'weniger'
+        lte: 'weniger oder gleich'
+        gt: 'größer'
+        gte: 'größer oder gleich'
+        in: 'in'
+        notIn: 'nicht in'
+        isNull: 'ist null'
+        isNotNull: 'ist nicht null'
 query:
     filtered: "(gefiltert)"
+

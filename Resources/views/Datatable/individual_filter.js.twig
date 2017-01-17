@@ -18,7 +18,7 @@ $(selector + "_wrapper").find("tr input.individual_filtering").on("input", funct
 });
 
 {# input event for select drop downs #}
-$(selector + "_wrapper" + " select.individual_filtering").on("input", function (event) {
+$(selector + "_wrapper" + " select.individual_filtering").on("change", function (event) {
     var searchFieldId = $(event.currentTarget).data('filter-property-id');
     var searchValue = $(this).val();
     searchValue = searchValue ? searchValue.toString() : '';
