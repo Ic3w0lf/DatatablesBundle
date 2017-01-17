@@ -234,7 +234,7 @@ class SliderFilter extends AbstractFilter
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'search_type' => 'eq',
+            'search_types'  => array('like'),
             'property' => '',
             'class' => '',
             'cancel_button' => false,
@@ -263,7 +263,7 @@ class SliderFilter extends AbstractFilter
             'labelledby' => null,
         ));
 
-        $resolver->setAllowedTypes('search_type', 'string');
+        $resolver->setAllowedTypes('search_types', 'array');
         $resolver->setAllowedTypes('property', 'string');
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('cancel_button', 'bool');

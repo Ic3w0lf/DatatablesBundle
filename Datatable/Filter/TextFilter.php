@@ -69,7 +69,7 @@ class TextFilter extends AbstractFilter
     {
         $resolver->setDefaults(
             array(
-                'search_types'  => array('like'),
+                'search_types'  => array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn'),
                 'property'      => '',
                 'search_column' => '',
                 'class'         => '',
