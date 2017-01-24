@@ -176,11 +176,11 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
                 break;
             case 'in':
                 $andExpr->add($pivot->expr()->in($searchField, '?' . $i));
-                $pivot->setParameter($i, explode(',', $searchValue));
+                $pivot->setParameter($i, array_map('trim', explode(',', $searchValue)));
                 break;
             case 'notIn':
                 $andExpr->add($pivot->expr()->notIn($searchField, '?' . $i));
-                $pivot->setParameter($i, explode(',', $searchValue));
+                $pivot->setParameter($i, array_map('trim', explode(',', $searchValue)));
                 break;
             case 'isNull':
                 $andExpr->add($pivot->expr()->isNull($searchField));
