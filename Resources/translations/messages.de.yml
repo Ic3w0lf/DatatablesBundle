@@ -29,6 +29,10 @@ datatables:
         save: "Speichern"
     dialog:
         close: "Schließen"
+    select:
+        rows:
+            _: "| %d Zeilen ausgewählt"
+            1: "| 1 Zeile ausgewählt"
 daterange:
     apply: "Übernehmen"
     cancel: "Löschen"

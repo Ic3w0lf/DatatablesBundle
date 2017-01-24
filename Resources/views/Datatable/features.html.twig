@@ -33,6 +33,7 @@
         {% if option.autoClose is defined %}"autoClose": {{ option.autoClose ? 'true' : 'false' }},{% endif %}
         {% if option.action is defined %}"action": {{ include(option.action|raw) }},{% endif %}
         {% if option.exportOptions is defined %}"exportOptions": {{ option.exportOptions|json_encode|raw }},{% endif %}
+        {% if option.editor is defined and option.editor %}"editor": editor,{% endif %}
         {% if option.buttons is defined %}
             "buttons":[
                 {% for subButton in option.buttons %}

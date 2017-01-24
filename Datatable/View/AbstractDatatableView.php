@@ -103,6 +103,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $events;
 
     /**
+     * A SelectEvents instance.
+     *
+     * @var SelectEvents
+     */
+    protected $selectEvents;
+
+    /**
      * A ColumnBuilder instance.
      *
      * @var ColumnBuilder
@@ -115,6 +122,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var Ajax
      */
     protected $ajax;
+
+    /**
+     * An Editor instance.
+     *
+     * @var Editor
+     */
+    protected $editor;
 
     /**
      * Data to use as the display data for the table.
@@ -172,8 +186,10 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->options = new Options();
         $this->callbacks = new Callbacks();
         $this->events = new Events();
+        $this->selectEvents = new SelectEvents();
         $this->columnBuilder = new ColumnBuilder($this->getName());
         $this->ajax = new Ajax();
+        $this->editor = new Editor();
 
         $this->data = null;
         $this->qb = null;
@@ -234,6 +250,14 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
+    public function getSelectEvents()
+    {
+        return $this->selectEvents;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getColumnBuilder()
     {
         return $this->columnBuilder;
@@ -245,6 +269,14 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getAjax()
     {
         return $this->ajax;
+    }
+
+    /**
+     * @return Editor
+     */
+    public function getEditor()
+    {
+        return $this->editor;
     }
 
     /**

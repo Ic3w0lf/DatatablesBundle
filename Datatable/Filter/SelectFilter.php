@@ -60,6 +60,7 @@ class SelectFilter extends TextFilter
 
         $resolver->setDefaults(array(
             'select_options' => array(),
+            'search_types'   => array('eq')
         ));
 
         $resolver->setAllowedTypes('select_options', 'array');

@@ -29,6 +29,10 @@ datatables:
         save: "Save"
     dialog:
         close: "Close"
+    select:
+        rows:
+            _: "| %d rows selected"
+            1: "| 1 row selected"
 daterange:
     apply: "Apply"
     cancel: "Cancel"

@@ -73,6 +73,13 @@ interface DatatableViewInterface
     public function getEvents();
 
     /**
+     * Get Events.
+     *
+     * @return Events
+     */
+    public function getSelectEvents();
+
+    /**
      * Get ColumnBuilder.
      *
      * @return ColumnBuilder
@@ -85,6 +92,13 @@ interface DatatableViewInterface
      * @return Ajax
      */
     public function getAjax();
+
+    /**
+     * Get Editor
+     *
+     * @return Editor
+     */
+    public function getEditor();
 
     /**
      * Returns a callable that could transform the data line

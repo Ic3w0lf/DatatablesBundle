@@ -26,6 +26,10 @@
 
         var selector = "#{{ view_table_id }}";
 
+        var editor = new $.fn.dataTable.Editor(
+            {% include 'SgDatatablesBundle:Datatable:editor.html.twig' %}
+        );
+
         var defaults = {
             {% include "SgDatatablesBundle:Datatable:language.html.twig" %}
         };
@@ -77,6 +81,7 @@
                 {% endif %}
             })
             {% include "SgDatatablesBundle:Datatable:after_events.js.twig" %}
+            {% include "SgDatatablesBundle:Datatable:select_events.js.twig" %}
             {% if view_features.extensions.responsive is defined %}
                 {% if true == view_features.extensions.responsive %}
                     .on('responsive-display', function (e, datatable, row, showHide, update) {

@@ -10,7 +10,9 @@
 
 {% block html %}
     {% if column.filter.searchTypes|length > 1 %}
-        <select id="{{ tableId }}-sg-search-type-{{ selectorId }}" class="individual_filtering_search_type {{ column.filter.class|default(defaultFilterClass) }}">
+        <select id="{{ tableId }}-sg-search-type-{{ selectorId }}"
+                class="individual_filtering_search_type {{ column.filter.class|default(defaultFilterClass) }}"
+                style="{% if column.width %} width:{{ column.width }};{% endif %}">
             {% for searchType in column.filter.searchTypes %}
                 <option value="{{ searchType }}">{{ ('filter.search_type.' ~ searchType)|trans({}, 'messages') }}</option>
             {% endfor %}

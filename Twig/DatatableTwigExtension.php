@@ -99,25 +99,24 @@ class DatatableTwigExtension extends Twig_Extension
     {
         $options = array();
 
-        $options['view_actions'] = $datatable->getTopActions();
-        $options['view_features'] = $datatable->getFeatures();
-        $options['view_options'] = $datatable->getOptions();
-        $options['view_callbacks'] = $datatable->getCallbacks();
-        $options['view_events'] = $datatable->getEvents();
-        $options['view_columns'] = $datatable->getColumnBuilder()->getColumns();
+        $options['view_actions']       = $datatable->getTopActions();
+        $options['view_features']      = $datatable->getFeatures();
+        $options['view_options']       = $datatable->getOptions();
+        $options['view_callbacks']     = $datatable->getCallbacks();
+        $options['view_events']        = $datatable->getEvents();
+        $options['view_select_events'] = $datatable->getSelectEvents();
+        $options['view_columns']       = $datatable->getColumnBuilder()->getColumns();
+        $options['view_editor']        = $datatable->getEditor();
 
         if ('' === $datatable->getAjax()->getUrl()) {
             throw new Exception('getOptions(): Specify an ajax url.');
         }
 
-        $options['view_ajax'] = $datatable->getAjax();
-
-        $options['view_multiselect'] = $datatable->getColumnBuilder()->isMultiselect();
+        $options['view_ajax']               = $datatable->getAjax();
+        $options['view_multiselect']        = $datatable->getColumnBuilder()->isMultiselect();
         $options['view_multiselect_column'] = $datatable->getColumnBuilder()->getMultiselectColumn();
-
-        $options['view_table_id'] = $datatable->getName();
-
-        $options['datatable'] = $datatable;
+        $options['view_table_id']           = $datatable->getName();
+        $options['datatable']               = $datatable;
 
         return $options;
     }
