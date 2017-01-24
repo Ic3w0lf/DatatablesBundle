@@ -551,7 +551,7 @@ class DatatableQuery
                 if (true === $this->isSearchColumn($column)) {
                     $filter      = $column->getFilter();
                     $searchField = $this->searchColumns[$key];
-                    
+
                     if (array_key_exists($key, $this->requestParams['columns']) === false) {
                         continue;
                     }

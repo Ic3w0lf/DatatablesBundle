@@ -252,7 +252,7 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
      */
     public function setSearchType($searchType)
     {
-        if (in_array(strtolower($searchType), $this->searchTypes)) {
+        if (in_array(strtolower($searchType), array_map('strtolower', $this->searchTypes))) {
             $this->searchType = $searchType;
         }
 
