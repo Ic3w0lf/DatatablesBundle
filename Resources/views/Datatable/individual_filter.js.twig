@@ -20,10 +20,16 @@ $(selector + "_wrapper").find("tr input.individual_filtering").on("input", funct
 {# input event for select drop downs #}
 $(selector + "_wrapper" + " select.individual_filtering").on("change", function (event) {
     var searchFieldId = $(event.currentTarget).data('filter-property-id');
-    var searchValue = $(this).val();
+    var searchValue   = $(this).val();
     searchValue = searchValue ? searchValue.toString() : '';
     oTable
         .column(searchFieldId)
         .search(searchValue)
         .draw();
+});
+
+{# event for search type dropdowns #}
+$(selector + "_wrapper select.individual_filtering_search_type").on("change", function (event) {
+    {# just redraw, ajax.data function will take care of individual filtering params #}
+    oTable.draw();
 });
