@@ -68,12 +68,10 @@ class DateTimeColumn extends TimeagoColumn
             'render' => 'render_datetime',
             'date_format' => 'lll',
             'editable' => false,
-            'editable_if' => null
         ));
 
         $resolver->setAllowedTypes('date_format', 'string');
         $resolver->setAllowedTypes('editable', 'bool');
-        $resolver->setAllowedTypes('editable_if', array('Closure', 'null'));
 
         return $this;
     }

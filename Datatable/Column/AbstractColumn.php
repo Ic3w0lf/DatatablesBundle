@@ -162,13 +162,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     protected $editable;
 
     /**
-     * Editable only if conditions are True.
-     *
-     * @var Closure|null
-     */
-    protected $editableIf;
-
-    /**
      * Name of datatable view.
      *
      * @var string
@@ -182,6 +175,13 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      * @var integer
      */
     protected $index;
+
+    /**
+     * Holds editor specific column options
+     *
+     * @var array
+     */
+    protected $editorOptions;
 
     /**
      * Property accessor.
@@ -199,7 +199,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      */
     public function __construct()
     {
-        $this->options = array();
+        $this->options  = array();
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
@@ -256,22 +256,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * {@inheritdoc}
      */
-    public function isEditableIfClosure(array $row = array())
-    {
-        if (true === $this->editable) {
-            if ($this->editableIf instanceof Closure) {
-                return call_user_func($this->editableIf, $row);
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isAssociation()
     {
         return (false === strstr($this->data, '.') ? false : true);
@@ -302,6 +286,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
             'width'           => '',
             'order_sequence'  => null,
             'add_if'          => null,
+            'editor_options'  => array()
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -318,6 +303,32 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
         $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('order_sequence', array('array', 'null'));
         $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
+        $resolver->setAllowedTypes('editor_options', 'array');
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureEditorOptions(OptionsResolver $resolver)
+    {
+        // most common column options
+        $resolver->setDefaults(array(
+            'className'     => '',
+            'data'          => $this->getData(),
+            'def'           => null,
+            'entityDecode'  => true,
+            'fieldInfo'     => null,
+            'labelInfo'     => null,
+            'id'            => null,
+            'label'         => $this->options['title'],
+            'message'       => null,
+            'multiEditable' => true,
+            'name'          => $this->getData(),
+            'type'          => 'text',
+            'options'       => null
+        ));
 
         return $this;
     }
@@ -338,8 +349,11 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     {
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
-
         $this->options = $resolver->resolve($options);
+
+        $editorResolver = new OptionsResolver();
+        $this->configureEditorOptions($editorResolver);
+        $this->options['editor_options'] = $editorResolver->resolve($this->options['editor_options']);
 
         AbstractViewOptions::callingSettersWithOptions($this->options, $this);
 
@@ -673,12 +687,9 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      */
     public function setFilter(array $filter)
     {
-        $filterType = $filter[0];
-        $options = $filter[1];
-
         /** @var \Sg\DatatablesBundle\Datatable\Filter\AbstractFilter $newFilter */
-        $newFilter = FilterFactory::createFilterByType($filterType);
-        $this->filter = $newFilter->setupOptionsResolver($options);
+        $newFilter    = FilterFactory::createFilterByType($filter[0]);
+        $this->filter = $newFilter->setupOptionsResolver($filter[1]);
 
         return $this;
     }
@@ -742,30 +753,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
-     * Set editableIf.
-     *
-     * @param Closure|null $editableIf
-     *
-     * @return $this
-     */
-    public function setEditableIf($editableIf)
-    {
-        $this->editableIf = $editableIf;
-
-        return $this;
-    }
-
-    /**
-     * Get editableIf.
-     *
-     * @return Closure|null
-     */
-    public function getEditableIf()
-    {
-        return $this->editableIf;
-    }
-
-    /**
      * Set table name.
      *
      * @param string $tableName
@@ -814,13 +801,33 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
+     * @return array
+     */
+    public function getEditorOptions()
+    {
+        return $this->editorOptions;
+    }
+
+    /**
+     * @param array $editorOptions
+     *
+     * @return $this
+     */
+    public function setEditorOptions($editorOptions)
+    {
+        $this->editorOptions = $editorOptions;
+
+        return $this;
+    }
+
+    /**
      * Get dqlProperty.
      *
      * @return string
      */
     public function getDqlProperty()
     {
-        return '['.str_replace('.','][',$this->dql).']';
+        return '['.str_replace('.', '][', $this->dql).']';
     }
 
     /**

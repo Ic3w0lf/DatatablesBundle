@@ -47,10 +47,9 @@ class VirtualColumn extends Column
         parent::configureOptions($resolver);
 
         $resolver->remove('editable');
-        $resolver->remove('editable_if');
 
         $resolver->setDefaults(array(
-            'orderable' => false,
+            'orderable'  => false,
             'searchable' => false,
         ));
 

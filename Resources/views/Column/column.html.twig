@@ -54,10 +54,5 @@
                 return {{ column.render }}(data, type, row, meta{% if column.renderArgs|length %},{{ column.renderArgs|join(',') }}{% endif %});
             },
         {% endif %}
-        {% if column.editable %}
-            "render": function(data, type, row, meta) {
-                return render_editable_text(data, type, row, meta, '{{ column.data }}', '{{ column.index }}');
-            },
-        {% endif %}
     {% endblock %}
 },

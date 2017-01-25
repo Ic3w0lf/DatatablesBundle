@@ -3,13 +3,21 @@
     "ajax":  {
         "url": "{{ view_editor.ajaxUrl }}",
         "type": "{{ view_editor.ajaxType }}",
-        {% if view_editor.ajaxData is not null %}"data": {{ include(view_editor.ajaxData)|raw  }}{% endif %}
+        {% if view_editor.ajaxData %}"data": {{ include(view_editor.ajaxData)|raw  }}{% endif %}
     },
     "display": "{{ view_editor.display }}",
     "idSrc": "{{ view_options.rowId }}",
+    {% if view_editor.templateFormId %}"template": "{{ view_editor.templateFormId }}",{% endif %}
     "fields": [
-        {% for column in view_columns %}
-            { label: "{{ column.title }}", name: "{{ column.data }}" },
+        {% for column in view_columns if column.editable is defined and column.editable %}
+            {
+                label: "{{ column.editorOptions.label }}",
+                name: "{{ column.editorOptions.data }}",
+                type: "{{  column.editorOptions.type }}",
+                {% if column.editorOptions.options %}
+                    "options": {{ column.editorOptions.options|json_encode|raw }}
+                {% endif %}
+            },
         {% endfor %}
     ],
 }

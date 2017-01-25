@@ -57,14 +57,6 @@ class Column extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function addDataToOutputArray(&$row)
-    {
-        $row['sg_datatables_editable'][$this->getIndex()] = $this->isEditableIfClosure($row);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAlias()
     {
         return 'column';
@@ -82,16 +74,14 @@ class Column extends AbstractColumn
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
-            'filter' => array('text', array()),
-            'default' => '',
-            'editable' => false,
-            'editable_if' => null,
+            'filter'   => array('text', array()),
+            'default'  => '',
+            'editable' => false
         ));
 
         $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('default', 'string');
         $resolver->setAllowedTypes('editable', 'bool');
-        $resolver->setAllowedTypes('editable_if', array('Closure', 'null'));
 
         return $this;
     }

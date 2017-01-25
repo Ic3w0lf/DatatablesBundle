@@ -102,7 +102,6 @@ class ArrayColumn extends Column
         parent::configureOptions($resolver);
 
         $resolver->remove('editable');
-        $resolver->remove('editable_if');
 
         $resolver->setRequired(array('data'));
 

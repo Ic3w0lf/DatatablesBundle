@@ -36,6 +36,10 @@
     </tbody>
 </table>
 
+{% if view_editor.twigTemplate %}
+    {% include view_editor.twigTemplate ignore missing %}
+{% endif %}
+
 {% if view_multiselect %}
     <div id="{{ view_table_id }}_multiselect_actions"></div>
 {% endif %}
