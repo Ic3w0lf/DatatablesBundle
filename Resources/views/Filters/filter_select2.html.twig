@@ -52,20 +52,21 @@
                         cache: {{ column.filter.cache ? 'true' : 'false' }},
                         data: function (params) {
                             return {
-                                q: params.term,
-                                page: params.page
+                                term: params.term,
+                                page: params.page,
+                                origin: 'grid'
                             };
                         },
                         processResults: function (data, params) {
                             params.page = params.page || 1;
 
                             var resultArray = [];
-                            for (var id in data) {
+                            $.each(data.results, function (idx, object) {
                                 resultArray.push({
-                                    id : data[id],
-                                    text : data[id]
+                                    id :   object.text,
+                                    text : object.text
                                 });
-                            }
+                            });
 
                             return {
                                 results: resultArray,

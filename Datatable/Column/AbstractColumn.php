@@ -313,22 +313,36 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      */
     public function configureEditorOptions(OptionsResolver $resolver)
     {
-        // most common column options
         $resolver->setDefaults(array(
             'className'     => '',
             'data'          => $this->getData(),
             'def'           => null,
             'entityDecode'  => true,
             'fieldInfo'     => null,
-            'labelInfo'     => null,
             'id'            => null,
             'label'         => $this->options['title'],
+            'labelInfo'     => null,
             'message'       => null,
             'multiEditable' => true,
             'name'          => $this->getData(),
             'type'          => 'text',
-            'options'       => null
+            'options'       => null, //todo
+            'attr'          => array(), //todo
+            'opts'          => array() //todo
         ));
+
+        $resolver->setAllowedTypes('className', 'string');
+        $resolver->setAllowedTypes('data', array('string', 'integer'));
+        $resolver->setAllowedTypes('def', array('null', 'string', 'integer'));
+        $resolver->setAllowedTypes('entityDecode', 'boolean');
+        $resolver->setAllowedTypes('fieldInfo', array('null', 'string'));
+        $resolver->setAllowedTypes('id', array('null', 'string'));
+        $resolver->setAllowedTypes('label', array('null', 'string'));
+        $resolver->setAllowedTypes('labelInfo', array('null', 'string'));
+        $resolver->setAllowedTypes('message', array('null', 'string'));
+        $resolver->setAllowedTypes('multiEditable', 'boolean');
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('type', 'string');
 
         return $this;
     }

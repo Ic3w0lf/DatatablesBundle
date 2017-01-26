@@ -11,12 +11,17 @@
     "fields": [
         {% for column in view_columns if column.editable is defined and column.editable %}
             {
+                className: "{{ column.editorOptions.className }}",
+                data: "{{ column.editorOptions.data }}", //todo, can be string,int, func
+                def: "{{ column.editorOptions.def }}", //todo, can be string,int, func
+                entityDecode: {{ column.editorOptions.entityDecode }},
                 label: "{{ column.editorOptions.label }}",
-                name: "{{ column.editorOptions.data }}",
+                name: "{{ column.editorOptions.name }}",
                 type: "{{  column.editorOptions.type }}",
-                {% if column.editorOptions.options %}
-                    "options": {{ column.editorOptions.options|json_encode|raw }}
-                {% endif %}
+                options: {{ column.editorOptions.options|json_encode|raw }},
+                attr: {{ column.editorOptions.attr|json_encode|raw }},
+                labelInfo: "{{  column.editorOptions.labelInfo }}",
+                opts: {{ column.editorOptions.opts|json_encode|raw }}
             },
         {% endfor %}
     ],
