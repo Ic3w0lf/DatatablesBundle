@@ -27,11 +27,11 @@
     {% import _self as self %}
     {
         {% if option.extend is defined %}"extend": "{{ option.extend }}",{% endif %}
+        {% if option.columns is defined %}"columns": "{{ option.columns }}",{% endif %}
         {% if option.className is defined %}"className": "{{ option.className }}",{% endif %}
         {% if option.text is defined %}"text": "{{ option.text|e('js') }}",{% endif %}
         {% if option.fade is defined %}"fade": {{ option.fade }},{% endif %}
         {% if option.autoClose is defined %}"autoClose": {{ option.autoClose ? 'true' : 'false' }},{% endif %}
-        {% if option.action is defined %}"action": {{ include(option.action|raw) }},{% endif %}
         {% if option.exportOptions is defined %}"exportOptions": {{ option.exportOptions|json_encode|raw }},{% endif %}
         {% if option.editor is defined and option.editor %}"editor": editor,{% endif %}
         {% if option.buttons is defined %}
@@ -39,7 +39,15 @@
                 {% for subButton in option.buttons %}
                     {{ self.renderButton(subButton) }}
                 {% endfor %}
-            ]
+            ],
+        {% endif %}
+        {% if option.action is defined %}
+            {% if (option.action['vars'] is defined) %}
+                {% set vars = option.action['vars'] %}
+            {% else %}
+                {% set vars = {} %}
+            {% endif %}
+            "action": {% include option.action['template'] with vars %},
         {% endif %}
     },
 {% endmacro %}
