@@ -186,34 +186,34 @@ class DatatableQuery
         $locale
     )
     {
-        $this->serializer = $serializer;
+        $this->serializer    = $serializer;
         $this->requestParams = $requestParams;
         $this->datatableView = $datatableView;
 
         $this->individualFiltering = $this->datatableView->getOptions()->getIndividualFiltering();
 
-        $this->entity = $this->datatableView->getEntity();
-        $this->em = $this->datatableView->getEntityManager();
-        $this->metadata = $this->getMetadata($this->entity);
-        $this->tableName = $this->getTableName($this->metadata);
+        $this->entity               = $this->datatableView->getEntity();
+        $this->em                   = $this->datatableView->getEntityManager();
+        $this->metadata             = $this->getMetadata($this->entity);
+        $this->tableName            = $this->getTableName($this->metadata);
         $this->rootEntityIdentifier = $this->getIdentifier($this->metadata);
-        $this->qb = $this->em->createQueryBuilder();
+        $this->qb                   = $this->em->createQueryBuilder();
 
-        $this->selectColumns = array();
+        $this->selectColumns  = array();
         $this->virtualColumns = $datatableView->getColumnBuilder()->getVirtualColumns();
-        $this->joins = array();
-        $this->searchColumns = array();
-        $this->orderColumns = array();
-        $this->callbacks = array();
-        $this->columns = $datatableView->getColumnBuilder()->getColumns();
-        $this->paginator = null;
+        $this->joins          = array();
+        $this->searchColumns  = array();
+        $this->orderColumns   = array();
+        $this->callbacks      = array();
+        $this->columns        = $datatableView->getColumnBuilder()->getColumns();
+        $this->paginator      = null;
 
         $this->configs = $configs;
 
-        $this->twig = $twig;
-        $this->imagineBundle = $imagineBundle;
-        $this->doctrineExtensions = $doctrineExtensions;
-        $this->locale = $locale;
+        $this->twig                   = $twig;
+        $this->imagineBundle          = $imagineBundle;
+        $this->doctrineExtensions     = $doctrineExtensions;
+        $this->locale                 = $locale;
         $this->isPostgreSQLConnection = false;
 
         $this->setLineFormatter();
@@ -769,6 +769,7 @@ class DatatableQuery
     {
         $this->setSelectFrom();
         $this->setLeftJoins($this->qb);
+        $this->setWhere($this->qb);
         $this->setWhereAllCallback($this->qb);
         $this->setOrderBy();
 

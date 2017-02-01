@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
 /**
@@ -21,13 +22,28 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 class ColumnFactory
 {
     /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
+     * ColumnFactory constructor.
+     *
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
      * Create Column by alias.
      *
      * @param string $alias
      *
      * @return ColumnInterface
      */
-    public static function createColumnByAlias($alias)
+    public function createColumnByAlias($alias)
     {
         if (empty($alias) || !is_string($alias) && !$alias instanceof ColumnInterface) {
             throw new InvalidArgumentException('createColumnByAlias(): String or ColumnInterface expected.');
@@ -72,6 +88,10 @@ class ColumnFactory
                 $column = new ProgressBarColumn();
                 break;
             default:
+                if ($this->container->has($alias)) {
+                    $column = $this->container->get($alias);
+                    break;
+                }
                 throw new InvalidArgumentException('createColumnByName(): The column is not supported.');
         }
 

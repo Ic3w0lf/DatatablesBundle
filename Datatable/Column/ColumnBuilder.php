@@ -48,6 +48,11 @@ class ColumnBuilder implements ColumnBuilderInterface
      */
     private $tableName;
 
+    /**
+     * @var ColumnFactory
+     */
+    private $columnFactory;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -55,14 +60,16 @@ class ColumnBuilder implements ColumnBuilderInterface
     /**
      * Ctor.
      *
-     * @param string $tableName
+     * @param string        $tableName
+     * @param ColumnFactory $columnFactory
      */
-    public function __construct($tableName)
+    public function __construct($tableName, $columnFactory)
     {
-        $this->columns = array();
+        $this->columns           = array();
         $this->multiselectColumn = null;
-        $this->multiselect = false;
-        $this->tableName = $tableName;
+        $this->multiselect       = false;
+        $this->tableName         = $tableName;
+        $this->columnFactory     = $columnFactory;
     }
 
     //-------------------------------------------------
@@ -82,7 +89,7 @@ class ColumnBuilder implements ColumnBuilderInterface
         /**
          * @var AbstractColumn $column
          */
-        $column = ColumnFactory::createColumnByAlias($alias);
+        $column = $this->columnFactory->createColumnByAlias($alias);
         $column->setTableName($this->tableName);
         $column->setData($data);
         $column->setDql($data);

@@ -17,6 +17,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    sg_datatables.column.factory:
+        class: Sg\DatatablesBundle\Datatable\Column\ColumnFactory
+        arguments:
+            - '@service_container'
+
     sg_datatables.datatable.abstract:
         class: Sg\DatatablesBundle\Datatable\View\AbstractDatatableView
         abstract: true
@@ -26,6 +31,7 @@ services:
             - '@translator.default'
             - '@router'
             - '@doctrine.orm.entity_manager'
+            - '@sg_datatables.column.factory'
 
     sg_datatables.query:
         class: Sg\DatatablesBundle\Datatable\Data\DatatableDataManager

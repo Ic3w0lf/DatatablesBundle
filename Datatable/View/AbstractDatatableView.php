@@ -16,6 +16,7 @@ use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Sg\DatatablesBundle\Datatable\Column\ColumnFactory;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -164,35 +165,37 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @param TranslatorInterface           $translator
      * @param RouterInterface               $router
      * @param EntityManagerInterface        $em
+     * @param ColumnFactory                 $columnFactory
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $securityToken,
         TranslatorInterface $translator,
         RouterInterface $router,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        ColumnFactory $columnFactory
     )
     {
         $this->assertTheNameOnlyContainsAllowedCharacters();
 
         $this->authorizationChecker = $authorizationChecker;
-        $this->securityToken = $securityToken;
-        $this->translator = $translator;
-        $this->router = $router;
-        $this->em = $em;
+        $this->securityToken        = $securityToken;
+        $this->translator           = $translator;
+        $this->router               = $router;
+        $this->em                   = $em;
 
-        $this->topActions = new TopActions();
-        $this->features = new Features();
-        $this->options = new Options();
-        $this->callbacks = new Callbacks();
-        $this->events = new Events();
-        $this->selectEvents = new SelectEvents();
-        $this->columnBuilder = new ColumnBuilder($this->getName());
-        $this->ajax = new Ajax();
-        $this->editor = new Editor();
+        $this->topActions    = new TopActions();
+        $this->features      = new Features();
+        $this->options       = new Options();
+        $this->callbacks     = new Callbacks();
+        $this->events        = new Events();
+        $this->selectEvents  = new SelectEvents();
+        $this->ajax          = new Ajax();
+        $this->editor        = new Editor();
+        $this->columnBuilder = new ColumnBuilder($this->getName(), $columnFactory);
 
         $this->data = null;
-        $this->qb = null;
+        $this->qb   = null;
     }
 
     //-------------------------------------------------
