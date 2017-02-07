@@ -11,7 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
-use Sg\DatatablesBundle\Datatable\View\AbstractViewOptions;
+use Sg\DatatablesBundle\Datatable\Option\AbstractViewOptions;
 use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;

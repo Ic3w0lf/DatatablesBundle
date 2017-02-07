@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\View;
+namespace Sg\DatatablesBundle\Datatable\Option;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -119,20 +119,6 @@ class Features extends AbstractViewOptions
      */
     protected $extensions;
 
-    /**
-     * Search result highlighting.
-     *
-     * @var boolean
-     */
-    protected $highlight;
-
-    /**
-     * Search result highlighting color.
-     *
-     * @var string
-     */
-    protected $highlightColor;
-
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -142,26 +128,22 @@ class Features extends AbstractViewOptions
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            array(
-                'auto_width'      => true,
-                'defer_render'    => false,
-                'info'            => true,
-                'jquery_ui'       => false,
-                'length_change'   => true,
-                'ordering'        => true,
-                'paging'          => true,
-                'processing'      => true,
-                'scroll_x'        => false,
-                'scroll_y'        => '',
-                'searching'       => true,
-                'state_save'      => false,
-                'delay'           => 0,
-                'extensions'      => array(),
-                'highlight'       => false,
-                'highlight_color' => 'red'
-            )
-        );
+        $resolver->setDefaults(array(
+            'auto_width'      => true,
+            'defer_render'    => false,
+            'info'            => true,
+            'jquery_ui'       => false,
+            'length_change'   => true,
+            'ordering'        => true,
+            'paging'          => true,
+            'processing'      => true,
+            'scroll_x'        => false,
+            'scroll_y'        => '',
+            'searching'       => true,
+            'state_save'      => false,
+            'delay'           => 0,
+            'extensions'      => array(),
+        ));
 
         $resolver->setAllowedTypes('auto_width', 'bool');
         $resolver->setAllowedTypes('defer_render', 'bool');
@@ -177,8 +159,6 @@ class Features extends AbstractViewOptions
         $resolver->setAllowedTypes('state_save', 'bool');
         $resolver->setAllowedTypes('delay', 'int');
         $resolver->setAllowedTypes('extensions', 'array');
-        $resolver->setAllowedTypes('highlight', 'bool');
-        $resolver->setAllowedTypes('highlight_color', 'string');
 
         return $this;
     }
@@ -523,53 +503,5 @@ class Features extends AbstractViewOptions
     public function getExtensions()
     {
         return $this->extensions;
-    }
-
-    /**
-     * Set highlight.
-     *
-     * @param boolean $highlight
-     *
-     * @return $this
-     */
-    public function setHighlight($highlight)
-    {
-        $this->highlight = $highlight;
-
-        return $this;
-    }
-
-    /**
-     * Get highlight.
-     *
-     * @return boolean
-     */
-    public function getHighlight()
-    {
-        return $this->highlight;
-    }
-
-    /**
-     * Set highlight color.
-     *
-     * @param string $highlightColor
-     *
-     * @return $this
-     */
-    public function setHighlightColor($highlightColor)
-    {
-        $this->highlightColor = $highlightColor;
-
-        return $this;
-    }
-
-    /**
-     * Get highlight color.
-     *
-     * @return string
-     */
-    public function getHighlightColor()
-    {
-        return $this->highlightColor;
     }
 }

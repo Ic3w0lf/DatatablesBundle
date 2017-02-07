@@ -12,7 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Data\DatatableQuery;
-use Sg\DatatablesBundle\Datatable\View\AbstractViewOptions;
+use Sg\DatatablesBundle\Datatable\Option\AbstractViewOptions;
 use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
 use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 use Sg\DatatablesBundle\Datatable\Filter\FilterFactory;
@@ -275,7 +275,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
             'class'           => '',
             'default_content' => null,
             'padding'         => '',
-            'name'            => '',
+            'name'            => $this->getData(),
             'orderable'       => true,
             'render'          => null,
             'render_args'     => array(),

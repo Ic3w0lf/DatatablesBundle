@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\View;
+namespace Sg\DatatablesBundle\Datatable\Option;
 
 use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
 
@@ -36,16 +36,12 @@ abstract class AbstractViewOptions implements OptionsInterface
      */
     protected $nestedOptionsResolver;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
     /**
      * Ctor.
      */
     public function __construct()
     {
-        $this->options = array();
+        $this->options               = array();
         $this->nestedOptionsResolver = null;
         $this->set($this->options);
     }

@@ -12,7 +12,6 @@
 namespace Sg\DatatablesBundle\Datatable\View;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -69,46 +68,9 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $em;
 
     /**
-     * Actions on the top of the table (e.g. 'New' button).
-     *
-     * @var TopActions
+     * @var DatatableViewConfiguration
      */
-    protected $topActions;
-
-    /**
-     * A Features instance.
-     *
-     * @var Features
-     */
-    protected $features;
-
-    /**
-     * An Options instance.
-     *
-     * @var Options
-     */
-    protected $options;
-
-    /**
-     * A Callback instance.
-     *
-     * @var Callbacks
-     */
-    protected $callbacks;
-
-    /**
-     * An Events instance.
-     *
-     * @var Events
-     */
-    protected $events;
-
-    /**
-     * A SelectEvents instance.
-     *
-     * @var SelectEvents
-     */
-    protected $selectEvents;
+    protected $configuration;
 
     /**
      * A ColumnBuilder instance.
@@ -116,20 +78,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var ColumnBuilder
      */
     protected $columnBuilder;
-
-    /**
-     * An Ajax instance.
-     *
-     * @var Ajax
-     */
-    protected $ajax;
-
-    /**
-     * An Editor instance.
-     *
-     * @var Editor
-     */
-    protected $editor;
 
     /**
      * Data to use as the display data for the table.
@@ -184,14 +132,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->router               = $router;
         $this->em                   = $em;
 
-        $this->topActions    = new TopActions();
-        $this->features      = new Features();
-        $this->options       = new Options();
-        $this->callbacks     = new Callbacks();
-        $this->events        = new Events();
-        $this->selectEvents  = new SelectEvents();
-        $this->ajax          = new Ajax();
-        $this->editor        = new Editor();
+        $this->configuration = new DatatableViewConfiguration();
         $this->columnBuilder = new ColumnBuilder($this->getName(), $columnFactory);
 
         $this->data = null;
@@ -211,51 +152,11 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return DatatableViewConfiguration
      */
-    public function getTopActions()
+    public function getConfiguration()
     {
-        return $this->topActions;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFeatures()
-    {
-        return $this->features;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCallbacks()
-    {
-        return $this->callbacks;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEvents()
-    {
-        return $this->events;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectEvents()
-    {
-        return $this->selectEvents;
+        return $this->configuration;
     }
 
     /**
@@ -264,22 +165,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getColumnBuilder()
     {
         return $this->columnBuilder;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAjax()
-    {
-        return $this->ajax;
-    }
-
-    /**
-     * @return Editor
-     */
-    public function getEditor()
-    {
-        return $this->editor;
     }
 
     /**

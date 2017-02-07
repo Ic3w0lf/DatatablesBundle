@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\View;
+namespace Sg\DatatablesBundle\Datatable\Option;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -219,34 +219,32 @@ class Options extends AbstractViewOptions
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            array(
-                'display_start'                 => 0,
-                'defer_loading'                 => -1,
-                'dom'                           => 'lfrtip',
-                'length_menu'                   => array(10, 25, 50, 100),
-                'order_classes'                 => true,
-                'order'                         => array(array(0, 'asc')),
-                'order_multi'                   => true,
-                'page_length'                   => 10,
-                'paging_type'                   => Style::FULL_NUMBERS_PAGINATION,
-                'renderer'                      => '',
-                'scroll_collapse'               => false,
-                'search_delay'                  => 0,
-                'state_duration'                => 7200,
-                'stripe_classes'                => array(),
-                'class'                         => Style::BASE_STYLE,
-                'individual_filtering'          => false,
-                'individual_filtering_position' => 'head',
-                'use_integration_options'       => false,
-                'force_dom'                     => false,
-                'load_on_document_ready'        => true,
-                'row_id'                        => '',
-                'count_all_results'             => true,
-                'processing'                    => false,
-                'default_filter_class'          => ''
-            )
-        );
+        $resolver->setDefaults(array(
+            'display_start'                 => 0,
+            'defer_loading'                 => -1,
+            'dom'                           => 'lfrtip',
+            'length_menu'                   => array(10, 25, 50, 100),
+            'order_classes'                 => true,
+            'order'                         => array(array(0, 'asc')),
+            'order_multi'                   => true,
+            'page_length'                   => 10,
+            'paging_type'                   => Style::FULL_NUMBERS_PAGINATION,
+            'renderer'                      => '',
+            'scroll_collapse'               => false,
+            'search_delay'                  => 0,
+            'state_duration'                => 7200,
+            'stripe_classes'                => array(),
+            'class'                         => Style::BASE_STYLE,
+            'individual_filtering'          => false,
+            'individual_filtering_position' => 'head',
+            'use_integration_options'       => false,
+            'force_dom'                     => false,
+            'load_on_document_ready'        => true,
+            'row_id'                        => '',
+            'count_all_results'             => true,
+            'processing'                    => false,
+            'default_filter_class'          => ''
+        ));
 
         $resolver->setAllowedTypes('display_start', 'int');
         $resolver->setAllowedTypes('defer_loading', 'int');
@@ -412,16 +410,18 @@ class Options extends AbstractViewOptions
      */
     protected function setOrder(array $order)
     {
-        foreach($order as $o) {
-            if( !is_array($o) ||
+        foreach ($order as $o) {
+            if (
+                !is_array($o) ||
                 !array_key_exists(0, $o) ||
                 !is_numeric($o[0]) ||
                 !array_key_exists(1, $o) ||
-                !in_array($o[1], array('desc', 'asc'))){
+                !in_array($o[1], array('desc', 'asc'))
+            ) {
                 throw new \Exception('setOrder(): Invalid array format.');
             }
         }
-        
+
         $this->order = $order;
 
         return $this;

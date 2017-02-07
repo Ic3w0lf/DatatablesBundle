@@ -11,8 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Action;
 
+use Sg\DatatablesBundle\Datatable\Option\AbstractViewOptions;
 use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
-use Sg\DatatablesBundle\Datatable\View\AbstractViewOptions;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Closure;

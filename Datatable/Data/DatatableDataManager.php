@@ -120,7 +120,7 @@ class DatatableDataManager
      */
     public function getQueryFrom(DatatableViewInterface $datatableView)
     {
-        $type = $datatableView->getAjax()->getType();
+        $type         = $datatableView->getConfiguration()->getAjax()->getType();
         $parameterBag = null;
 
         if ('GET' === strtoupper($type)) {

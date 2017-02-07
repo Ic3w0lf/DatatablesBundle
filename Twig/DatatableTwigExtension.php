@@ -99,20 +99,19 @@ class DatatableTwigExtension extends Twig_Extension
     {
         $options = array();
 
-        $options['view_actions']       = $datatable->getTopActions();
-        $options['view_features']      = $datatable->getFeatures();
-        $options['view_options']       = $datatable->getOptions();
-        $options['view_callbacks']     = $datatable->getCallbacks();
-        $options['view_events']        = $datatable->getEvents();
-        $options['view_select_events'] = $datatable->getSelectEvents();
+        $options['view_actions']       = $datatable->getConfiguration()->getTopActions();
+        $options['view_features']      = $datatable->getConfiguration()->getFeatures();
+        $options['view_options']       = $datatable->getConfiguration()->getOptions();
+        $options['view_callbacks']     = $datatable->getConfiguration()->getCallbacks();
+        $options['view_events']        = $datatable->getConfiguration()->getEvents();
         $options['view_columns']       = $datatable->getColumnBuilder()->getColumns();
-        $options['view_editor']        = $datatable->getEditor();
+        $options['view_editor']        = $datatable->getConfiguration()->getEditor();
 
-        if ('' === $datatable->getAjax()->getUrl()) {
+        if ('' === $datatable->getConfiguration()->getAjax()->getUrl()) {
             throw new Exception('getOptions(): Specify an ajax url.');
         }
 
-        $options['view_ajax']               = $datatable->getAjax();
+        $options['view_ajax']               = $datatable->getConfiguration()->getAjax();
         $options['view_multiselect']        = $datatable->getColumnBuilder()->isMultiselect();
         $options['view_multiselect_column'] = $datatable->getColumnBuilder()->getMultiselectColumn();
         $options['view_table_id']           = $datatable->getName();
@@ -171,7 +170,7 @@ class DatatableTwigExtension extends Twig_Extension
      * @param AbstractColumn        $column
      * @param integer               $loopIndex
      *
-     * @return mixed|string|void
+     * @return mixed|string
      */
     public function datatableFilterRender(Twig_Environment $twig, AbstractDatatableView $datatable, AbstractColumn $column, $loopIndex)
     {
@@ -186,7 +185,7 @@ class DatatableTwigExtension extends Twig_Extension
                 'filterColumnId'     => $filterColumnId,
                 'selectorId'         => $loopIndex,
                 'tableId'            => $datatable->getName(),
-                'defaultFilterClass' => $datatable->getOptions()->getDefaultFilterClass()
+                'defaultFilterClass' => $datatable->getConfiguration()->getOptions()->getDefaultFilterClass()
             )
         );
     }
@@ -202,10 +201,11 @@ class DatatableTwigExtension extends Twig_Extension
      */
     public function datatableIcon(Twig_Environment $twig, $icon, $label = '')
     {
-        if ($icon)
+        if ($icon) {
             return $twig->render('SgDatatablesBundle:Action:icon.html.twig', array('icon' => $icon, 'label' => $label));
-        else
-            return $label;
+        }
+
+        return $label;
     }
 
     /**

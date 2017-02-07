@@ -7,8 +7,6 @@
  # file that was distributed with this source code.
  #}
 {% block renderFunctions %}
-var renderFunctionsAlreadyLoaded = true;
-
 function render_boolean(data, type, row, meta, trueIcon, falseIcon, trueLabel, falseLabel) {
     if ("" == trueIcon && "" == trueLabel) {
         trueLabel = "true";
@@ -115,3 +113,5 @@ function render_ellipsis(data, type, row, meta, cutoff, wordbreak, escapeHtml) {
     return '<span class="ellipsis" title="'+esc(data)+'">'+shortened+'&#8230;</span>';
 }
 {% endblock renderFunctions %}
+
+var renderFunctionsAlreadyLoaded = true;

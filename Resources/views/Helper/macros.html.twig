@@ -1,0 +1,11 @@
+{# include a template with parameters #}
+{%- macro include_with_vars(arrayParams) -%}
+    {% set vars = arrayParams['vars'] is defined ? arrayParams['vars'] : {} %}
+    {% include arrayParams['template'] with vars %}
+{%- endmacro -%}
+
+{# print parameter as bool #}
+{%- macro js_bool(param) -%}
+    {{ param ? 'true' : 'false' }}
+{%- endmacro -%}
+

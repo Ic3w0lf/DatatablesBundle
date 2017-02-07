@@ -1,3 +1,5 @@
+{% import '@SgDatatables/Helper/macros.html.twig' as macros %}
+
 {##
  # This file is part of the SgDatatablesBundle package.
  #
@@ -6,32 +8,30 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-"autoWidth": {{ view_features.autoWidth ? 'true' : 'false' }},
-"deferRender": {{ view_features.deferRender ? 'true' : 'false' }},
-"info": {{ view_features.info ? 'true' : 'false' }},
-"jQueryUI": {{ view_features.jQueryUI ? 'true' : 'false' }},
-"lengthChange": {{ view_features.lengthChange ? 'true' : 'false' }},
-"ordering": {{ view_features.ordering ? 'true' : 'false' }},
-"paging": {{ view_features.paging ? 'true' : 'false' }},
-"processing": {{ view_features.processing ? 'true' : 'false' }},
-"scrollX": {{ view_features.scrollX ? 'true' : 'false' }},
-"scrollY": "{{ view_features.scrollY }}",
-"searching": {{ view_features.searching ? 'true' : 'false' }},
-
-{# "serverSide" -> Ajax.html.twig #}
-
-"stateSave": {{ view_features.stateSave ? 'true' : 'false' }},
-"delay": {{ view_features.delay }},
+"autoWidth":    {{ macros.js_bool(view_features.autoWidth) }},
+"deferRender":  {{ macros.js_bool(view_features.deferRender) }},
+"info":         {{ macros.js_bool(view_features.info) }},
+"jQueryUI":     {{ macros.js_bool(view_features.jQueryUI) }},
+"lengthChange": {{ macros.js_bool(view_features.lengthChange) }},
+"ordering":     {{ macros.js_bool(view_features.ordering) }},
+"paging":       {{ macros.js_bool(view_features.paging) }},
+"processing":   {{ macros.js_bool(view_features.processing) }},
+"scrollX":      {{ macros.js_bool(view_features.scrollX) }},
+"scrollY":      "{{ view_features.scrollY }}",
+"searching":    {{ macros.js_bool(view_features.searching) }},
+"stateSave":    {{ macros.js_bool(view_features.stateSave) }},
+"delay":        {{ view_features.delay }},
 
 {% macro renderButton(option) %}
     {% import _self as self %}
+    {% import '@SgDatatables/Helper/macros.html.twig' as macros %}
     {
         {% if option.extend is defined %}"extend": "{{ option.extend }}",{% endif %}
         {% if option.columns is defined %}"columns": "{{ option.columns }}",{% endif %}
         {% if option.className is defined %}"className": "{{ option.className }}",{% endif %}
         {% if option.text is defined %}"text": "{{ option.text|e('js') }}",{% endif %}
         {% if option.fade is defined %}"fade": {{ option.fade }},{% endif %}
-        {% if option.autoClose is defined %}"autoClose": {{ option.autoClose ? 'true' : 'false' }},{% endif %}
+        {% if option.autoClose is defined %}"autoClose": {{ macros.js_bool(option.autoClose) }},{% endif %}
         {% if option.exportOptions is defined %}"exportOptions": {{ option.exportOptions|json_encode|raw }},{% endif %}
         {% if option.editor is defined and option.editor %}"editor": editor,{% endif %}
         {% if option.buttons is defined %}
@@ -42,12 +42,7 @@
             ],
         {% endif %}
         {% if option.action is defined %}
-            {% if (option.action['vars'] is defined) %}
-                {% set vars = option.action['vars'] %}
-            {% else %}
-                {% set vars = {} %}
-            {% endif %}
-            "action": {% include option.action['template'] with vars %},
+            "action": {{ macros.include_with_vars(option.action) }},
         {% endif %}
     },
 {% endmacro %}

@@ -38,67 +38,14 @@ interface DatatableViewInterface
     public function getEntityManager();
 
     /**
-     * Get TopActions.
-     *
-     * @return TopActions
-     */
-    public function getTopActions();
-
-    /**
-     * Get Features.
-     *
-     * @return Features
-     */
-    public function getFeatures();
-
-    /**
-     * Get Options.
-     *
-     * @return Options
-     */
-    public function getOptions();
-
-    /**
-     * Get Callbacks.
-     *
-     * @return Callbacks
-     */
-    public function getCallbacks();
-
-    /**
-     * Get Events.
-     *
-     * @return Events
-     */
-    public function getEvents();
-
-    /**
-     * Get Events.
-     *
-     * @return Events
-     */
-    public function getSelectEvents();
-
-    /**
-     * Get ColumnBuilder.
-     *
      * @return ColumnBuilder
      */
     public function getColumnBuilder();
 
     /**
-     * Get Ajax.
-     *
-     * @return Ajax
+     * @return DatatableViewConfiguration
      */
-    public function getAjax();
-
-    /**
-     * Get Editor
-     *
-     * @return Editor
-     */
-    public function getEditor();
+    public function getConfiguration();
 
     /**
      * Returns a callable that could transform the data line

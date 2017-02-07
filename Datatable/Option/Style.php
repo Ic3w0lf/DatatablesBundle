@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\View;
+namespace Sg\DatatablesBundle\Datatable\Option;
 
 /**
  * Class Style

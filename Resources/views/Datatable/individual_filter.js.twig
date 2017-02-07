@@ -1,35 +1,90 @@
-{% if "head" == view_options.individualFilteringPosition %}
-    $(selector + '_wrapper tfoot tr').insertAfter($(selector + '_wrapper thead tr').first());
+{% if 'head' == view_options.individualFilteringPosition %}
+    $(selector + '_wrapper tfoot tr')
+        .insertAfter(
+            $(selector + '_wrapper thead tr')
+                .first()
+        );
 {% endif %}
 
-{% if "both" == view_options.individualFilteringPosition %}
-    $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr').first());
-{% endif %}
+moment.locale("{{ app.request.locale }}");
+$(selector + '_wrapper', 'body')
+    .find('input.individual_filtering') {# event for filter inputs #}
+        .on('input', function (event) {
+            delayCancel(function () {
+                var curInput = $(event.currentTarget);
+                oTable
+                    .column(curInput.data('filter-column-name') + ':name')
+                    .search(curInput.val())
+                    .draw();
+            }, {{ view_options.searchDelay }});
+        })
+    .end()
+    .find('select.individual_filtering') {# event for selects #}
+        .on('change', function (event) {
+            var searchFieldName = $(event.currentTarget).data('filter-column-name');
+            var searchValue     = $(this).val();
+            searchValue = searchValue ? searchValue.toString() : '';
 
-{# event for inputs #}
-$(selector + "_wrapper").find("tr input.individual_filtering").on("input", function (event) {
-    delayCancel(function () {
-        var curInput = $(event.currentTarget);
-        oTable
-            .column(curInput.data('filter-property-id'))
-            .search(curInput.val())
-            .draw();
-    }, {{ view_options.searchDelay }});
-});
+            oTable
+                .column(searchFieldName + ':name')
+                .search(searchValue)
+                .draw();
+        })
+    .end()
+    .find('select.individual_filtering_search_type') {# event for search type select #}
+        .on('change', function () {
+            {# just redraw, ajax.data function will take care of individual filtering params #}
+            oTable.draw();
+        })
+    .end()
+    .find('.sg-daterange-wrapper') {# init daterangepicker #}
+        .each(function () {
+            var wrapper = $(this);
+            var input   = wrapper.find('input:first');
 
-{# input event for select drop downs #}
-$(selector + "_wrapper" + " select.individual_filtering").on("change", function (event) {
-    var searchFieldId = $(event.currentTarget).data('filter-property-id');
-    var searchValue   = $(this).val();
-    searchValue = searchValue ? searchValue.toString() : '';
-    oTable
-        .column(searchFieldId)
-        .search(searchValue)
-        .draw();
-});
+            var dateSeparator = ' - ';
 
-{# event for search type dropdowns #}
-$(selector + "_wrapper select.individual_filtering_search_type").on("change", function (event) {
-    {# just redraw, ajax.data function will take care of individual filtering params #}
-    oTable.draw();
-});
+            //apply daterangepicker to wrapper
+            wrapper.daterangepicker({
+                showDropdowns:        true,
+                linkedCalendars:      false,
+                showCustomRangeLabel: false,
+                autoUpdateInput:      false,
+                locale: {
+                    format:      "{{ 'daterange.format'|trans({}, 'messages') }}",
+                    applyLabel:  "{{ 'daterange.apply'|trans({}, 'messages') }}",
+                    cancelLabel: "{{ 'daterange.cancel'|trans({}, 'messages') }}",
+                    daysOfWeek: moment.weekdaysMin(),
+                    monthNames: moment.monthsShort(),
+                    firstDay:   moment.localeData().firstDayOfWeek()
+                }
+            })
+                .on('cancel.daterangepicker', function (ev, picker) {
+                    $(this).find('input')
+                        .val('')
+                        .trigger('input');
+                })
+                .on('apply.daterangepicker', function (ev, picker) {
+                    var startDate = picker.startDate.format("{{ 'daterange.format'|trans({}, 'messages') }}");
+                    var endDate   = picker.endDate.format("{{ 'daterange.format'|trans({}, 'messages') }}");
+
+                    $(this).find('input')
+                        .val(startDate + dateSeparator + endDate)
+                        .trigger('input');
+                });
+
+            //stateLoadParams.dt callback might have set the value for this input,
+            //but we first need to init DRP before we can set the dates in the DRP
+            if (input.val()) {
+                var dates = $.map(input.val().split(dateSeparator), $.trim);
+
+                //continue if we do not have start/end dates
+                if (dates.length < 2) {
+                    return true;
+                }
+
+                //set dates on daterangepicker instance
+                wrapper.data('daterangepicker').setStartDate(dates[0]);
+                wrapper.data('daterangepicker').setEndDate(dates[1]);
+            }
+        });

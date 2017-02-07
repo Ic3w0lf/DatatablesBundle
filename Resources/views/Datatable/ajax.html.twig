@@ -1,3 +1,5 @@
+{% import '@SgDatatables/Helper/macros.html.twig' as macros %}
+
 {##
  # This file is part of the SgDatatablesBundle package.
  #
@@ -14,7 +16,7 @@
         "pages": {{ view_ajax.pipeline }},
     {% endif %}
     {% if (view_ajax.dataSrc) %}
-        "dataSrc": {% include view_ajax.dataSrc['template'] with view_ajax.dataSrc['vars']|default({}) %},
+        "dataSrc": {{ macros.include_with_vars(view_ajax.dataSrc) }},
     {% endif %}
     {% if view_options.individualFiltering %}
         // add request parameters before submit
@@ -22,6 +24,7 @@
             var tableId      = selector,
                 tableWrapper = $(tableId + '_wrapper');
 
+            //individual filter
             for (var columnIdx in data.columns) {
                 // skip loop if the property is from prototype
                 if (!data.columns.hasOwnProperty(columnIdx)) continue;
@@ -29,8 +32,10 @@
                 // skip loop if column is not searchable anyway
                 if (!data.columns[columnIdx].searchable) continue;
 
+                var columnName  = data.columns[columnIdx].name;
+
                 var sourceInput = tableWrapper
-                    .find('tr input' + tableId +'-sg-filter-' + columnIdx)
+                    .find('input[data-filter-column-name="' + columnName +'"]')
                     .first();
 
                 // no column filter found
@@ -39,13 +44,27 @@
                 // skip if empty search value
                 if (!sourceInput.val()) continue;
 
-                var searchTypeSelect = $('select' + tableId + '-sg-search-type-' + columnIdx).first();
+                var searchTypeSelect = $('select#' + sourceInput.attr('id').replace('sg-filter', 'sg-search-type'))
+                    .first();
 
                 // no filter search type found
                 if (!searchTypeSelect.length) continue;
 
                 // add search_type parameter to ajax data obj
                 data.columns[columnIdx].search.search_type = searchTypeSelect.val();
+            }
+
+            //send column name instead of 1 for ordering
+            for (var orderIdx in data.order) {
+                // skip loop if the property is from prototype
+                if (!data.columns.hasOwnProperty(columnIdx)) continue;
+
+                var columnIdx = data.order[orderIdx].column;
+
+                // skip loop if column is not orderable anyway
+                if (!data.columns[columnIdx].orderable) continue;
+
+                data.order[orderIdx].column = data.columns[columnIdx].name;
             }
         }
     {% endif %}

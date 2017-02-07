@@ -1,3 +1,5 @@
+{% import '@SgDatatables/Helper/macros.html.twig' as macros %}
+
 {##
  # This file is part of the SgDatatablesBundle package.
  #
@@ -7,114 +9,44 @@
  # file that was distributed with this source code.
  #}
 {% if (view_callbacks.createdRow) %}
-    {% if (view_callbacks.createdRow['vars'] is defined) %}
-        {% set vars = view_callbacks.createdRow['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "createdRow": {% include view_callbacks.createdRow['template'] with vars %},
+    "createdRow": {{ macros.include_with_vars(view_callbacks.createdRow) }},
 {% endif %}
 {% if (view_callbacks.drawCallback) %}
-    {% if (view_callbacks.drawCallback['vars'] is defined) %}
-        {% set vars = view_callbacks.drawCallback['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "drawCallback": {% include view_callbacks.drawCallback['template'] with vars %},
+    "drawCallback": {{ macros.include_with_vars(view_callbacks.drawCallback) }},
 {% endif %}
 {% if (view_callbacks.footerCallback) %}
-    {% if (view_callbacks.footerCallback['vars'] is defined) %}
-        {% set vars = view_callbacks.footerCallback['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "footerCallback": {% include view_callbacks.footerCallback['template'] with vars %},
+    "footerCallback": {{ macros.include_with_vars(view_callbacks.footerCallback) }},
 {% endif %}
 {% if (view_callbacks.formatNumber) %}
-    {% if (view_callbacks.formatNumber['vars'] is defined) %}
-        {% set vars = view_callbacks.formatNumber['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "formatNumber": {% include view_callbacks.formatNumber['template'] with vars %},
+    "formatNumber": {{ macros.include_with_vars(view_callbacks.formatNumber) }},
 {% endif %}
 {% if (view_callbacks.headerCallback) %}
-    {% if (view_callbacks.headerCallback['vars'] is defined) %}
-        {% set vars = view_callbacks.headerCallback['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "headerCallback": {% include view_callbacks.headerCallback['template'] with vars %},
+    "headerCallback": {{ macros.include_with_vars(view_callbacks.headerCallback) }},
 {% endif %}
 {% if (view_callbacks.infoCallback) %}
-    {% if (view_callbacks.infoCallback['vars'] is defined) %}
-        {% set vars = view_callbacks.infoCallback['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "infoCallback": {% include view_callbacks.infoCallback['template'] with vars %},
+    "infoCallback": {{ macros.include_with_vars(view_callbacks.infoCallback) }},
 {% endif %}
 {% if (view_callbacks.initComplete) %}
-    {% if (view_callbacks.initComplete['vars'] is defined) %}
-        {% set vars = view_callbacks.initComplete['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "initComplete": {% include view_callbacks.initComplete['template'] with vars %},
+    "initComplete": {{ macros.include_with_vars(view_callbacks.initComplete) }},
 {% endif %}
 {% if (view_callbacks.preDrawCallback) %}
-    {% if (view_callbacks.preDrawCallback['vars'] is defined) %}
-        {% set vars = view_callbacks.preDrawCallback['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "preDrawCallback": {% include view_callbacks.preDrawCallback['template'] with vars %},
+    "preDrawCallback": {{ macros.include_with_vars(view_callbacks.preDrawCallback) }},
 {% endif %}
 {% if (view_callbacks.rowCallback) %}
-    {% if (view_callbacks.rowCallback['vars'] is defined) %}
-        {% set vars = view_callbacks.rowCallback['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "rowCallback": {% include view_callbacks.rowCallback['template'] with vars%},
+    "rowCallback": {{ macros.include_with_vars(view_callbacks.rowCallback) }},
 {% endif %}
 {% if (view_callbacks.stateLoadCallback) %}
-    {% if (view_callbacks.stateLoadCallback['vars'] is defined) %}
-        {% set vars = view_callbacks.stateLoadCallback['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "stateLoadCallback": {% include view_callbacks.stateLoadCallback['template'] with vars %},
+    "stateLoadCallback": {{ macros.include_with_vars(view_callbacks.stateLoadCallback) }},
 {% endif %}
 {% if (view_callbacks.stateLoaded) %}
-    {% if (view_callbacks.stateLoaded['vars'] is defined) %}
-        {% set vars = view_callbacks.stateLoaded['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "stateLoaded": {% include view_callbacks.stateLoaded['template'] with vars %},
+    "stateLoaded": {{ macros.include_with_vars(view_callbacks.stateLoaded) }},
 {% endif %}
 {% if (view_callbacks.stateLoadParams) %}
-    {% if (view_callbacks.stateLoadParams['vars'] is defined) %}
-        {% set vars = view_callbacks.stateLoadParams['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "stateLoadParams": {% include view_callbacks.stateLoadParams['template'] with vars %},
+    "stateLoadParams": {{ macros.include_with_vars(view_callbacks.stateLoadParams) }},
 {% endif %}
 {% if (view_callbacks.stateSaveCallback) %}
-    {% if (view_callbacks.stateSaveCallback['vars'] is defined) %}
-        {% set vars = view_callbacks.stateSaveCallback['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "stateSaveCallback": {% include view_callbacks.stateSaveCallback['template'] with vars %},
+    "stateSaveCallback": {{ macros.include_with_vars(view_callbacks.stateSaveCallback) }},
 {% endif %}
 {% if (view_callbacks.stateSaveParams) %}
-    {% if (view_callbacks.stateSaveParams['vars'] is defined) %}
-        {% set vars = view_callbacks.stateSaveParams['vars'] %}
-    {% else %}
-        {% set vars = {} %}
-    {% endif %}
-    "stateSaveParams": {% include view_callbacks.stateSaveParams['template'] with vars %},
+    "stateSaveParams": {{ macros.include_with_vars(view_callbacks.stateSaveParams) }},
 {% endif %}

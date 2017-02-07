@@ -1,6 +1,6 @@
 <?php
 
-namespace Sg\DatatablesBundle\Datatable\View;
+namespace Sg\DatatablesBundle\Datatable\Option;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

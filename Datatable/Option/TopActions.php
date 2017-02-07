@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\View;
+namespace Sg\DatatablesBundle\Datatable\Option;
 
 use Sg\DatatablesBundle\Datatable\Action\Action;
 
@@ -60,7 +60,7 @@ class TopActions extends AbstractViewOptions
      */
     public function __construct()
     {
-        $this->options = array();
+        $this->options               = array();
         $this->nestedOptionsResolver = null;
     }
 
@@ -77,8 +77,8 @@ class TopActions extends AbstractViewOptions
 
         $resolver->setDefaults(array(
             'start_html' => '',
-            'end_html' => '',
-            'add_if' => null
+            'end_html'   => '',
+            'add_if'     => null
         ));
 
         $resolver->setAllowedTypes('start_html', 'string');

@@ -1,22 +1,22 @@
 <script type="text/javascript">
+    {# helper method for deferred searching #}
+    var delayCancel = (function(){
+        var timer = 0;
+
+        return function (callback, ms) {
+            clearTimeout(timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
     {% if true == view_options.isLoadOnDocumentReady %}
-        $(document).ready(function()
-        {
+        $(document).ready(function() {
             initialize_{{ view_table_id }}();
         });
     {% endif %}
 
-    function initialize_{{ view_table_id }}(finalOptions) {
-        finalOptions = finalOptions === undefined ? {} : finalOptions;
-
-        //small delay helper method
-        var delayCancel = (function(){
-            var timer = 0;
-            return function (callback, ms) {
-                clearTimeout(timer);
-                timer = setTimeout(callback, ms);
-            };
-        })();
+    function initialize_{{ view_table_id }} (finalOptions) {
+        finalOptions = finalOptions || {};
 
         if (typeof window.pipelineFunctionAlreadyLoaded == 'undefined') {
             {% if view_ajax.pipeline > 0 %}
@@ -50,10 +50,6 @@
             {% include "SgDatatablesBundle:Datatable:ajax.html.twig" %}
         };
 
-        var searchCols = {
-            {% include "SgDatatablesBundle:Datatable:search_columns.html.twig" %}
-        };
-
         {% if view_features.delay > 0 %}setTimeout(function (){{ '{' }}{% endif %}
             var columns = {
                 {% include "SgDatatablesBundle:Datatable:columns.html.twig" %}
@@ -64,7 +60,6 @@
             $.extend(defaults, callbacks);
             $.extend(defaults, ajax);
             $.extend(defaults, columns);
-            $.extend(defaults, searchCols);
             $.extend(true, defaults, finalOptions);
 
             if ($.fn.DataTable.isDataTable(selector)) {
@@ -74,25 +69,22 @@
             var oTable = $(selector)
             {% include "SgDatatablesBundle:Datatable:before_events.js.twig" %}
             .DataTable(defaults)
-            .on('draw.dt', function () {
-                {% if true == view_features.highlight %}
-                    {% include "SgDatatablesBundle:Datatable:highlight.js.twig" %}
-                {% endif %}
-            })
             {% include "SgDatatablesBundle:Datatable:after_events.js.twig" %}
-            {% include "SgDatatablesBundle:Datatable:select_events.js.twig" %}
 
         //rebind global search input because I think it fires way to many times
-        $(selector).parents('.dataTables_wrapper').find('.dataTables_filter input[type="search"]').each(function () {
-            var searchInput = $(this);
-            searchInput
-                .unbind()
-                .on('input', function () {
-                    delayCancel(function () {
-                        oTable.search(searchInput.val()).draw();
-                    }, {{ view_options.searchDelay }});
-                });
-        });
+        $(selector)
+            .parents('.dataTables_wrapper')
+            .find('.dataTables_filter input[type="search"]')
+            .each(function () {
+                var searchInput = $(this);
+                searchInput
+                    .unbind()
+                    .on('input', function () {
+                        delayCancel(function () {
+                            oTable.search(searchInput.val()).draw();
+                        }, {{ view_options.searchDelay }});
+                    });
+            });
 
         {% if view_options.individualFiltering %}
             {% include "@SgDatatables/Datatable/individual_filter.js.twig" %}

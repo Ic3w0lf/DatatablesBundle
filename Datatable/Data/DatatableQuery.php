@@ -53,11 +53,6 @@ class DatatableQuery
     private $entity;
 
     /**
-     * @var boolean
-     */
-    private $individualFiltering;
-
-    /**
      * @var EntityManager
      */
     private $em;
@@ -189,8 +184,6 @@ class DatatableQuery
         $this->serializer    = $serializer;
         $this->requestParams = $requestParams;
         $this->datatableView = $datatableView;
-
-        $this->individualFiltering = $this->datatableView->getOptions()->getIndividualFiltering();
 
         $this->entity               = $this->datatableView->getEntity();
         $this->em                   = $this->datatableView->getEntityManager();
@@ -541,22 +534,22 @@ class DatatableQuery
         }
 
         // individual filtering
-        if (true === $this->individualFiltering) {
+        if (true === $this->datatableView->getConfiguration()->getOptions()->getIndividualFiltering()) {
             $andExpr = $qb->expr()->andX();
 
             $i = 100;
 
-            foreach ($this->columns as $key => $column) {
-
+            foreach ($this->columns as $column) {
                 if (true === $this->isSearchColumn($column)) {
-                    $filter      = $column->getFilter();
-                    $searchField = $this->searchColumns[$key];
-
-                    if (array_key_exists($key, $this->requestParams['columns']) === false) {
+                    $requestParamColumnKey = $this->getRequestParamColumnKeyByName($column->getName());
+                    if ($requestParamColumnKey === null) {
                         continue;
                     }
 
-                    $columnSearchParams = $this->requestParams['columns'][$key]['search'];
+                    $filter      = $column->getFilter();
+                    $searchField = $this->searchColumns[$column->getName()];
+
+                    $columnSearchParams = $this->requestParams['columns'][$requestParamColumnKey]['search'];
                     $searchValue        = $columnSearchParams['value'];
 
                     if ('' != $searchValue && 'null' != $searchValue) {
@@ -594,14 +587,18 @@ class DatatableQuery
             $counter = count($this->requestParams['order']);
 
             for ($i = 0; $i < $counter; $i++) {
-                $columnIdx = (integer) $this->requestParams['order'][$i]['column'];
-                $requestColumn = $this->requestParams['columns'][$columnIdx];
+                $columnName    = $this->requestParams['order'][$i]['column'];
+                $dir           = $this->requestParams['order'][$i]['dir'];
 
-                if ('true' == $requestColumn['orderable']) {
-                    $this->qb->addOrderBy(
-                        $this->orderColumns[$columnIdx],
-                        $this->requestParams['order'][$i]['dir']
-                    );
+                foreach ($this->columns as $column) {
+                    //check if column is orderable and add if so
+                    if ($column->getName() == $columnName && $column->getOrderable()) {
+                        $this->qb->addOrderBy(
+                            $this->orderColumns[$columnName],
+                            $dir
+                        );
+                        break;
+                    }
                 }
             }
         }
@@ -622,6 +619,22 @@ class DatatableQuery
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $columnName
+     *
+     * @return int|null
+     */
+    private function getRequestParamColumnKeyByName($columnName)
+    {
+        foreach ($this->requestParams['columns'] as $key => $requestParamColumn) {
+            if (isset($requestParamColumn['name']) && $requestParamColumn['name'] == $columnName) {
+                return $key;
+            }
+        }
+
+        return null;
     }
 
     //-------------------------------------------------
@@ -675,6 +688,7 @@ class DatatableQuery
                 ->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
             if (true === $this->isPostgreSQLConnection) {
                 $this->qb->groupBy($this->tableName . '.' . $rootEntityIdentifier);
+
                 return count($this->qb->getQuery()->getResult());
             } else {
                 return (int) $this->qb->getQuery()->getSingleScalarResult();
@@ -741,7 +755,7 @@ class DatatableQuery
         $formatter = new DatatableFormatter($this);
         $formatter->runFormatter();
 
-        $countAllResults = $this->datatableView->getOptions()->getCountAllResults();
+        $countAllResults = $this->datatableView->getConfiguration()->getOptions()->getCountAllResults();
 
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
@@ -791,8 +805,13 @@ class DatatableQuery
     {
         $column = $this->columns[$key];
 
-        true === $column->getOrderable() ? $this->orderColumns[] = $columnTableName . '.' . $data : $this->orderColumns[] = null;
-        true === $column->getSearchable() ? $this->searchColumns[] = $columnTableName . '.' . $data : $this->searchColumns[] = null;
+        if ($column->getOrderable() === true) {
+            $this->orderColumns[$column->getName()] = $columnTableName . '.' . $data;
+        }
+
+        if ($column->getSearchable() === true) {
+            $this->searchColumns[$column->getName()] = $columnTableName . '.' . $data;
+        }
     }
 
     /**
