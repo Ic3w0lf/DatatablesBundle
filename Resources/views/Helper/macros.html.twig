@@ -1,3 +1,5 @@
+{% import '@SgDatatables/Helper/macros.html.twig' as macro %}
+
 {# include a template with parameters #}
 {%- macro include_with_vars(arrayParams) -%}
     {% set vars = arrayParams['vars'] is defined ? arrayParams['vars'] : {} %}
@@ -8,4 +10,3 @@
 {%- macro js_bool(param) -%}
     {{ param ? 'true' : 'false' }}
 {%- endmacro -%}
-

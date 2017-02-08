@@ -22,40 +22,6 @@
 "stateSave":    {{ macros.js_bool(view_features.stateSave) }},
 "delay":        {{ view_features.delay }},
 
-{% macro renderButton(option) %}
-    {% import _self as self %}
-    {% import '@SgDatatables/Helper/macros.html.twig' as macros %}
-    {
-        {% if option.extend is defined %}"extend": "{{ option.extend }}",{% endif %}
-        {% if option.columns is defined %}"columns": "{{ option.columns }}",{% endif %}
-        {% if option.className is defined %}"className": "{{ option.className }}",{% endif %}
-        {% if option.text is defined %}"text": "{{ option.text|e('js') }}",{% endif %}
-        {% if option.fade is defined %}"fade": {{ option.fade }},{% endif %}
-        {% if option.autoClose is defined %}"autoClose": {{ macros.js_bool(option.autoClose) }},{% endif %}
-        {% if option.exportOptions is defined %}"exportOptions": {{ option.exportOptions|json_encode|raw }},{% endif %}
-        {% if option.editor is defined and option.editor %}"editor": editor,{% endif %}
-        {% if option.buttons is defined %}
-            "buttons":[
-                {% for subButton in option.buttons %}
-                    {{ self.renderButton(subButton) }}
-                {% endfor %}
-            ],
-        {% endif %}
-        {% if option.action is defined %}
-            "action": {{ macros.include_with_vars(option.action) }},
-        {% endif %}
-    },
-{% endmacro %}
-
-{% from _self import renderButton %}
 {% for extension, options in view_features.extensions %}
-    {% if 'buttons' == extension %}
-        "buttons": [
-            {% for option in options %}
-                {{ renderButton(option) }}
-            {% endfor %}
-        ],
-    {% else %}
-        "{{ extension }}": {{ options|json_encode|raw }},
-    {% endif %}
+    "{{ extension }}": {{ datatable_json_encode(options) }},
 {% endfor %}

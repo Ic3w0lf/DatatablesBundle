@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Twig;
 
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
+use Sg\DatatablesBundle\Twig\Json\JsonFunctionEncoder;
 
 use Twig_Environment;
 use Twig_Extension;
@@ -33,23 +34,22 @@ class DatatableTwigExtension extends Twig_Extension
      */
     private $translator;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
+    /**
+     * @var JsonFunctionEncoder
+     */
+    private $jsonFunctionEncoder;
 
     /**
-     * Ctor.
+     * DatatableTwigExtension constructor.
      *
      * @param TranslatorInterface $translator
+     * @param JsonFunctionEncoder $jsonFunctionEncoder
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, JsonFunctionEncoder $jsonFunctionEncoder)
     {
-        $this->translator = $translator;
+        $this->translator          = $translator;
+        $this->jsonFunctionEncoder = $jsonFunctionEncoder;
     }
-
-    //-------------------------------------------------
-    // Twig_ExtensionInterface
-    //-------------------------------------------------
 
     /**
      * {@inheritdoc}
@@ -69,7 +69,8 @@ class DatatableTwigExtension extends Twig_Extension
             new Twig_SimpleFunction('datatable_render_html', array($this, 'datatableRenderHtml'), array('is_safe' => array('all'), 'needs_environment' => true)),
             new Twig_SimpleFunction('datatable_render_js', array($this, 'datatableRenderJs'), array('is_safe' => array('all'), 'needs_environment' => true)),
             new Twig_SimpleFunction('datatable_filter_render', array($this, 'datatableFilterRender'), array('is_safe' => array('all'), 'needs_environment' => true)),
-            new Twig_SimpleFunction('datatable_icon', array($this, 'datatableIcon'), array('is_safe' => array('all'), 'needs_environment' => true))
+            new Twig_SimpleFunction('datatable_icon', array($this, 'datatableIcon'), array('is_safe' => array('all'), 'needs_environment' => true)),
+            new Twig_SimpleFunction('datatable_json_encode', array($this, 'jsJsonEncode'), array('is_safe' => array('all')))
         );
     }
 
@@ -235,5 +236,22 @@ class DatatableTwigExtension extends Twig_Extension
         }
 
         return $result;
+    }
+
+    /**
+     * @param mixed $params
+     * @param bool  $filterNull
+     *
+     * @return string
+     */
+    public function jsJsonEncode($params, $filterNull = false)
+    {
+        if ($filterNull) {
+            $params = array_filter($params, function ($var) {
+                return $var !== null;
+            });
+        }
+
+        return $this->jsonFunctionEncoder->getJsJsonString($params);
     }
 }

@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="sg_datatables.serializer.method" class="Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer" />
+
+        <service id="sg_datatables.serializer.encoder.json"  class="Symfony\Component\Serializer\Encoder\JsonEncoder" />
+
+        <service id="sg_datatables.serializer" class="Symfony\Component\Serializer\Serializer">
+            <argument type="collection">
+                <argument type="service" id="sg_datatables.serializer.method" />
+            </argument>
+            <argument type="collection">
+                <argument type="service" id="sg_datatables.serializer.encoder.json" />
+            </argument>
+        </service>
+
+        <service id="sg_datatables.json_function_encoder" class="Sg\DatatablesBundle\Twig\Json\JsonFunctionEncoder">
+            <argument type="collection">
+                <argument type="service">
+                    <service class="Sg\DatatablesBundle\Twig\Json\Cases\JsReferenceCase" />
+                </argument>
+                <argument type="service">
+                    <service class="Sg\DatatablesBundle\Twig\Json\Cases\TemplateNameCase">
+                        <argument type="service" id="twig" />
+                    </service>
+                </argument>
+                <argument type="service">
+                    <service class="Sg\DatatablesBundle\Twig\Json\Cases\TemplateArrayCase">
+                        <argument type="service" id="twig" />
+                    </service>
+                </argument>
+            </argument>
+        </service>
+
+        <service id="sg_datatables.twig.extension" class="Sg\DatatablesBundle\Twig\DatatableTwigExtension">
+            <argument type="service" id="translator" />
+            <argument type="service" id="sg_datatables.json_function_encoder" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="sg_datatables.column.factory" class="Sg\DatatablesBundle\Datatable\Column\ColumnFactory">
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="sg_datatables.datatable.abstract"
+                 class="Sg\DatatablesBundle\Datatable\View\AbstractDatatableView"
+                 abstract="true">
+            <argument type="service" id="security.authorization_checker" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="router" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="sg_datatables.column.factory" />
+        </service>
+
+        <service id="sg_datatables.query" class="Sg\DatatablesBundle\Datatable\Data\DatatableDataManager">
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="sg_datatables.serializer" />
+            <argument type="service" id="twig" />
+            <argument>%sg_datatables.datatable.query%</argument>
+            <argument>%kernel.bundles%</argument>
+        </service>
+    </services>
+</container>
