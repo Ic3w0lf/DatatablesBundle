@@ -326,9 +326,9 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
             'multiEditable' => true,
             'name'          => $this->getData(),
             'type'          => 'text',
-            'options'       => null, //todo
-            'attr'          => array(), //todo
-            'opts'          => array() //todo
+            'options'       => null,
+            'attr'          => array(),
+            'opts'          => array(),
         ));
 
         $resolver->setAllowedTypes('className', 'string');

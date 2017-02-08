@@ -44,3 +44,9 @@
 {% if (view_events.stateSaveParams) %}
     .on('stateSaveParams.dt', {{ macros.include_with_vars(view_events.stateSaveParams) }})
 {% endif %}
+{% if (view_events.select) %}
+    .on('select', {{ macros.include_with_vars(view_events.select) }})
+{% endif %}
+{% if (view_events.deselect) %}
+    .on('deselect', {{ macros.include_with_vars(view_events.deselect) }})
+{% endif %}

@@ -125,6 +125,20 @@ class Events extends AbstractViewOptions
      */
     protected $xhr;
 
+    /**
+     * Items (rows, columns or cells) have been selected
+     *
+     * @var array
+     */
+    protected $select;
+
+    /**
+     * Items (rows, columns or cells) have been deselected
+     *
+     * @var array
+     */
+    protected $deselect;
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -150,6 +164,8 @@ class Events extends AbstractViewOptions
             'state_load_params' => array(),
             'state_save_params' => array(),
             'xhr'               => array(),
+            'select'            => array(),
+            'deselect'          => array(),
         ));
 
         $resolver->setAllowedTypes('column_sizing', 'array');
@@ -167,6 +183,8 @@ class Events extends AbstractViewOptions
         $resolver->setAllowedTypes('state_load_params', 'array');
         $resolver->setAllowedTypes('state_save_params', 'array');
         $resolver->setAllowedTypes('xhr', 'array');
+        $resolver->setAllowedTypes('select', 'array');
+        $resolver->setAllowedTypes('deselect', 'array');
 
         $this->nestedOptionsResolver = new OptionsResolver();
 
@@ -495,6 +513,46 @@ class Events extends AbstractViewOptions
     protected function setXhr(array $xhr)
     {
         $this->xhr = $xhr;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSelect()
+    {
+        return $this->select;
+    }
+
+    /**
+     * @param array $select
+     *
+     * @return Events
+     */
+    public function setSelect($select)
+    {
+        $this->select = $select;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDeselect()
+    {
+        return $this->deselect;
+    }
+
+    /**
+     * @param array $deselect
+     *
+     * @return Events
+     */
+    public function setDeselect($deselect)
+    {
+        $this->deselect = $deselect;
 
         return $this;
     }
