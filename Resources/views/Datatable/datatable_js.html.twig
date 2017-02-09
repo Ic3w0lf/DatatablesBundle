@@ -26,9 +26,8 @@
 
         var selector = "#{{ view_table_id }}";
 
-        var editor = new $.fn.dataTable.Editor(
-            {% include 'SgDatatablesBundle:Datatable:editor.html.twig' %}
-        );
+        var editor = new $.fn.dataTable.Editor({% include 'SgDatatablesBundle:Datatable:editor.html.twig' %});
+        {% include '@SgDatatables/Datatable/editor_events.js.twig' %}
 
         var defaults = {
             {% include "SgDatatablesBundle:Datatable:language.html.twig" %}

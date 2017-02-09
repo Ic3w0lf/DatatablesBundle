@@ -1,9 +1,16 @@
 {% import '@SgDatatables/Helper/macros.html.twig' as macro %}
 
 {# include a template with parameters #}
-{%- macro include_with_vars(arrayParams) -%}
-    {% set vars = arrayParams['vars'] is defined ? arrayParams['vars'] : {} %}
-    {% include arrayParams['template'] with vars %}
+{%- macro include_with_vars(params) -%}
+    {% spaceless %}
+    {# simple template string #}
+    {% if params is not iterable %}
+        {% include params %}
+    {% else %}
+        {% set vars = params['vars'] is defined ? params['vars'] : {} %}
+        {% include params['template'] with vars %}
+    {% endif %}
+    {% endspaceless %}
 {%- endmacro -%}
 
 {# print parameter as bool #}

@@ -1,0 +1,6 @@
+{% import '@SgDatatables/Helper/macros.html.twig' as macros %}
+
+{%- for key, template in view_editor.events -%}
+    {%- if loop.first %}editor{% endif -%}
+    .on('{{ key }}', {{- macros.include_with_vars(template) -}}){%- if loop.last -%};{%- endif -%}
+{%- endfor -%}

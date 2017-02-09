@@ -9,7 +9,7 @@ class JsReferenceCase extends AbstractCase
 {
     /**
      * @param string $key
-     * @param mixed  &$value
+     * @param mixed  $value
      *
      * @return bool
      */
@@ -20,7 +20,7 @@ class JsReferenceCase extends AbstractCase
 
     /**
      * @param string $key
-     * @param mixed  &$value
+     * @param mixed  $value
      *
      * @return array With funcID as key and variable as value
      */

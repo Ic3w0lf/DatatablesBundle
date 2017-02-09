@@ -54,23 +54,34 @@ class Editor extends AbstractViewOptions
     protected $templateFormId;
 
     /**
+     * Array of events, key hold events name
+     *
+     * @var array
+     */
+    protected $events;
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-           'ajax_url'  => '',
-           'ajax_type' => 'POST',
-           'ajax_data' => null,
-           'display'   => 'bootstrap',
-           'template'  => array('template' => null, 'id' => null)
-        ));
+        $resolver->setDefaults(
+            array(
+                'ajax_url'  => '',
+                'ajax_type' => 'POST',
+                'ajax_data' => null,
+                'display'   => 'bootstrap',
+                'template'  => array('template' => null, 'id' => null),
+                'events'    => array()
+            )
+        );
 
         $resolver->setAllowedTypes('ajax_url', 'string');
         $resolver->setAllowedTypes('ajax_type', 'string');
         $resolver->setAllowedTypes('ajax_data', array('null', 'string'));
         $resolver->setAllowedTypes('display', 'string');
         $resolver->setAllowedTypes('template', 'array');
+        $resolver->setAllowedTypes('events', 'array');
 
         return $this;
     }
@@ -180,6 +191,26 @@ class Editor extends AbstractViewOptions
     {
         $this->twigTemplate   = $template['template'];
         $this->templateFormId = $template['id'];
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param array $events
+     *
+     * @return Editor
+     */
+    public function setEvents($events)
+    {
+        $this->events = $events;
 
         return $this;
     }

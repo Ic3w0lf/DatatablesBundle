@@ -24,18 +24,18 @@ class TemplateNameCase extends AbstractCase
 
     /**
      * @param string $key
-     * @param mixed  &$value
+     * @param mixed  $value
      *
      * @return bool
      */
     public function isSpecialCase($key, &$value)
     {
-        return (is_string($value) && strpos($value, '@') === 0);
+        return (is_string($value) && preg_match("/^@.*\.twig$/", $value) === 1);
     }
 
     /**
      * @param string $key
-     * @param mixed  &$value
+     * @param mixed  $value
      *
      * @return array
      */
