@@ -790,6 +790,24 @@ class DatatableQuery
         return $this->execute()->getArrayResult();
     }
 
+    /**
+     * Function to get the prepared Query instance for export,
+     * so it is possible to iterate the results for large tables.
+     *
+     * @return Query
+     * @throws Exception
+     */
+    public function getExportQuery()
+    {
+        $this->setSelectFrom();
+        $this->setLeftJoins($this->qb);
+        $this->setWhere($this->qb);
+        $this->setWhereAllCallback($this->qb);
+        $this->setOrderBy();
+
+        return $this->qb->getQuery();
+    }
+
     //-------------------------------------------------
     // Helper
     //-------------------------------------------------

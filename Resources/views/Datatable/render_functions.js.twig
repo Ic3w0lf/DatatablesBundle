@@ -80,6 +80,8 @@ function render_progress_bar(data, type, row, meta, barClasses, min, max, label,
 }
 
 function render_ellipsis(data, type, row, meta, cutoff, wordbreak, escapeHtml) {
+    escapeHtml = escapeHtml || true;
+
     if (!data) {
         return '';
     }
